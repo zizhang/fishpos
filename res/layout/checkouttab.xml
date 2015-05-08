@@ -1,0 +1,258 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/checkoutLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <LinearLayout 
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_width="0px"
+        android:layout_height="0px" />
+    
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+        
+        <TableLayout
+	        android:id="@+id/tableLayout1"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center"
+	        android:layout_weight="2" >
+	        
+            <TableRow
+	            android:id="@+id/tableRow4"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_margin="20dp" >
+	
+	            <TextView
+	                android:id="@+id/uacLabel"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/UAC"
+	                android:textAppearance="?android:attr/textAppearanceLarge" />
+	            
+	            <EditText
+	                android:id="@+id/uac"
+	                android:layout_width="0dp"
+	                android:layout_height="wrap_content"
+	                android:layout_weight="1"
+	                android:ems="10"
+	                android:imeOptions="actionDone"
+	                android:inputType="numberDecimal" />
+	            
+	            <TextView
+	                android:id="@+id/dummy"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_weight="3"/>
+	        </TableRow>
+	
+	        <TableRow
+	            android:id="@+id/tableRow1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:gravity="center_vertical"
+	            android:layout_margin="20dp" >
+	
+	            <TextView
+	                android:id="@+id/boatLabel"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/Boat"
+	                android:layout_marginRight="20dp"
+	                android:textAppearance="?android:attr/textAppearanceLarge" />
+	
+	            <Spinner
+	                android:id="@+id/custSpinner"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_marginRight="20dp"
+	                android:drawSelectorOnTop="true" />
+	
+	            <Button
+	                android:id="@+id/addCustBtn"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                style="@style/btnStyleBlackpearl"
+	                android:text="@string/Plus" />
+	        </TableRow>
+	
+	        <TableRow
+	            android:id="@+id/tableRow2"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:gravity="center_vertical"
+	            android:layout_margin="20dp" >
+	
+	            <TextView
+	                android:id="@+id/fishTypeLabel"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/FishType"
+	                android:layout_marginRight="20dp"
+	                android:textAppearance="?android:attr/textAppearanceLarge" />
+	
+	            <Spinner
+	                android:id="@+id/fishTypeSpinner"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:drawSelectorOnTop="true" />
+	        </TableRow>
+	        
+	        <TableRow
+	            android:id="@+id/tableRow3"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_margin="20dp" >
+	
+	            <TextView
+	                android:id="@+id/pricePerPoundLabel"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/PricePerPound"
+	                android:textAppearance="?android:attr/textAppearanceLarge" />
+	            
+	            <EditText
+	                android:id="@+id/pricePerPoundInput"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:ems="10"
+	                android:imeOptions="actionDone"
+	                android:inputType="numberDecimal" >
+	                
+	            </EditText>
+	        </TableRow>
+	        
+	        <TableRow
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_margin="20dp" >
+	
+	            <TextView
+	                android:id="@+id/Weight"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/Weight"
+	                android:textAppearance="?android:attr/textAppearanceLarge" />
+	            
+	            <EditText
+	                android:id="@+id/weightInput"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:ems="10"
+	                android:imeOptions="actionDone"
+	                android:inputType="numberDecimal" >
+	                
+	            </EditText>
+	            
+	            <TextView
+	                android:id="@+id/lbs"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/lbs"
+	                android:layout_marginRight="20dp"
+	                android:textAppearance="?android:attr/textAppearanceLarge" />
+	        </TableRow>
+	        
+	    </TableLayout>
+	    
+        <TableLayout
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal"
+	        android:layout_weight="1" >
+	        
+            <TableRow
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_margin="20dp" >
+	    
+		        <TextView
+			         android:id="@+id/currentDate"
+			         android:layout_width="wrap_content"
+			         android:layout_height="wrap_content"
+			         android:layout_gravity="left"
+			         android:textAppearance="?android:attr/textAppearanceLarge"/>
+	        
+	        </TableRow>
+	        
+            <TableRow
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_margin="20dp" >
+	    
+	        
+	        </TableRow>
+	        
+            <TableRow
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_margin="20dp" >
+	    
+	        
+	        </TableRow>
+	        
+            <TableRow
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_margin="20dp" >
+	    
+		        <TextView
+			         android:layout_width="wrap_content"
+			         android:layout_height="wrap_content"
+			         android:layout_gravity="center"
+			         android:text="@string/totalPrice"
+			         android:textAppearance="?android:attr/textAppearanceLarge"/>
+	        
+	        </TableRow>
+	        
+            <TableRow
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_margin="20dp" >
+	    
+		        <TextView
+		            android:id="@+id/totalPrice"
+			         android:layout_width="wrap_content"
+			         android:layout_height="wrap_content"
+			         android:layout_gravity="center"
+			         android:textSize="50sp"
+			         android:textAppearance="?android:attr/textAppearanceLarge"/>
+	        
+	        </TableRow>
+	        
+	   	</TableLayout>
+        
+    </LinearLayout>
+            
+
+    
+    
+    <TextView
+        android:id="@+id/output"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+    
+    <LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_margin="50dp"
+	    android:gravity="center" >
+	
+	    <Button
+	        android:id="@+id/checkout"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/Checkout"
+	        style="@style/btnStyleBlackpearl"
+	        android:layout_gravity="bottom"
+	        android:width="300dp" />
+	</LinearLayout>
+
+</LinearLayout>

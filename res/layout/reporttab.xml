@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <TableLayout
+	        android:id="@+id/tableLayout1"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_margin="2dp">
+	        
+            <TableRow
+	            android:id="@+id/tableRow4"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_margin="2dp" >
+	
+	            <TextView
+			         android:layout_width="wrap_content"
+			         android:layout_height="wrap_content"
+			         android:id="@+id/totalAmountPaid"
+			         android:textSize="40sp"
+			         android:textAppearance="?android:attr/textAppearanceLarge"/>
+			</TableRow>
+			
+            <TableRow
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_margin="2dp" >
+	
+                <Button
+	                android:id="@+id/sortOrdersByDate"
+	                android:layout_width="0dp"
+	                android:layout_height="wrap_content"
+	                style="@style/btnStyleBlackpearl"
+	                android:layout_weight="1"
+	                android:layout_margin="10dp"
+	                android:text="@string/byDate" />
+                
+                <EditText
+	                android:id="@+id/searchByBoatName"
+	                android:layout_width="0dp"
+	                android:layout_height="wrap_content"
+	                android:layout_weight="1"
+	                android:layout_margin="10dp"
+	                android:hint="@string/enterBoatName"
+	                android:imeOptions="actionDone"
+	                android:ems="10"
+	                android:inputType="text" />
+                
+            	<Button
+	                android:id="@+id/searchBoat"
+	                android:layout_width="0dp"
+	                android:layout_height="wrap_content"
+	                style="@style/btnStyleBlackpearl"
+	                android:layout_weight="1"
+	                android:layout_margin="10dp"
+	                android:text="@string/searchBoat" />
+	            
+			</TableRow>
+			
+	</TableLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <TableLayout
+            android:id="@+id/orderTable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:shrinkColumns="*"
+            android:stretchColumns="*" >
+        </TableLayout>
+    </ScrollView>
+
+</LinearLayout>

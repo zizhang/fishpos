@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">fishpos</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="menu_settings">Settings</string>
+    <string name="Fragment1">This is Fragment 1</string>
+    <string name="Fragment2">This is Fragment 2</string>
+    <string name="Fragment3">This is Fragment 3</string>
+    <string name="Boat">Boat</string>
+    <string name="BoatName">Boat Name</string>
+    <string name="FishType">Fish Type</string>
+    <string name="PricePerPound">Price/lb   $</string>
+    <string name="Weight">Weight</string>
+    <string name="totalPrice">Total Price</string>
+    <string name="lbs">lbs</string>
+    <string name="Phone">Phone</string>
+    <string name="Add">Add</string>
+    <string name="UAC">UAC</string>
+    <string name="Plus">+</string>
+    <string name="title_activity_add_customer">Add Customer</string>
+    <string name="reportByDate">View All Sales By Date</string>
+    <string name="reportByBoat">View Sales By Boat</string>
+    <string name="enterBoatName">Enter Boat Name</string>
+    <string name="selectFishType">Select Fish Type</string>
+    <string name="Clear">Clear</string>
+    <string name="CptName">Captain Name</string>
+    <string name="CrewName">Crew Name</string>
+    <string name="SIN">SIN</string>
+    <string name="byDate">By Date</string>
+    <string name="Update">Update</string>
+    <string name="searchBoat">Search Boat</string>
+    <string name="hundreds">100s</string>
+    <string name="fifties">50s</string>
+    <string name="twenties">20s</string>
+    <string name="tens">10s</string>
+    <string name="fives">5s</string>
+    
+    <string name="toonies">$2</string>
+    <string name="loonies">$1</string>
+    <string name="quarters">$0.25</string>
+    <string name="dimes">$0.10</string>
+    <string name="nickels">$0.05</string>
+    <string name="equals">=</string>
+    <string name="multiply">x</string>
+    <string name="totalCash">Total Cash</string>
+    <string name="Load">Load Saved</string>
+    <string name="Checkout">Checkout</string>
+    
+    <color name="black">#000000</color>
+    
+    <string name="BoatNo">Boat #</string>
+    
+    <string name="CustName">Customer Name</string>
+    
+    <drawable name="Blue">#b0e0e6</drawable>
+	<drawable name="white">#ffffff</drawable>
+	<drawable name="black">#000000</drawable>
+	<drawable name="green">#347C2C</drawable>
+	<drawable name="pink">#FF00FF</drawable>
+	<drawable name="violet">#a020f0</drawable>
+	<drawable name="grey">#cccccc</drawable>
+	<drawable name="red">#C11B17</drawable>
+	<drawable name="yellow">#FFFF8C</drawable>
+	<drawable name="PowderBlue">#b0e0e6</drawable>
+	<drawable name="brown">#2F1700</drawable>
+	<drawable name="darkgrey">#606060</drawable>
+
+</resources>
