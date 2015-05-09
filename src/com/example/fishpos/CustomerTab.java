@@ -1,8 +1,6 @@
 package com.example.fishpos;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +11,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.app.Fragment;
 import android.graphics.Color;
- 
+
+/* Tab fragment for displaying customer table */
 public class CustomerTab extends Fragment {
 	TableLayout boatTable, crewTable;
 	ArrayList<Boat> allBoatsList;
@@ -33,6 +32,8 @@ public class CustomerTab extends Fragment {
         return rootView;
     }
     
+    // Load Boat and Crew table from database whenever this fragment is loaded
+    // Table styling implemented here
     private void buildBoatTable() {
     	
         // database handler
@@ -104,6 +105,7 @@ public class CustomerTab extends Fragment {
  
     }
     
+    // Load crew table from database
     private void buildCrewTable() {
     	
         // database handler

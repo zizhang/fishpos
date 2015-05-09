@@ -1,10 +1,6 @@
 package com.example.fishpos;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -35,10 +31,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_CID = "cid";
     private static final String KEY_CREW_NAME = "cName";
     private static final String KEY_SIN = "cSIN";
-    
-    
-    
-    
     
     // Orders table
     private static final String TABLE_ORDERS = "Sales";

@@ -5,8 +5,6 @@ import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
 import android.os.Bundle;
 import android.text.method.TextKeyListener;
 import android.view.LayoutInflater;

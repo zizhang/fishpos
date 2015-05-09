@@ -2,6 +2,7 @@ package com.example.fishpos;
 
 // Class for a crewman of a boat
 // Each crewman has a name and SIN #
+// A Boat has a captain and 0 or more crew members
 public class Crew {
 	int cid;
 	String cName;

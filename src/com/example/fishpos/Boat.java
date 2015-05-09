@@ -2,7 +2,7 @@ package com.example.fishpos;
 
 public class Boat {
 	String boatName;
-	String boatNo;
+	String boatNo; // Need to change this to CFV #.
 	String cptName;
 	
 	public Boat() {

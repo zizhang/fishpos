@@ -11,6 +11,7 @@ public class SpinnerFishType {
             this.fishType = fishType;
         }
          
+        // TODO: remove fish images
         public void setImageFile(int imageFile)
         {
             this.imageFile = imageFile;

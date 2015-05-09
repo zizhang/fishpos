@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+/* Activity for adding a boat and its crew members */
 public class AddCustomer extends Activity implements OnClickListener{
 	Button addNewCust, clearFields;
 	EditText boatName, boatNumber, cptName, crewName1, crewName2, crewName3, cptSIN, cSIN1, cSIN2, cSIN3;
@@ -55,7 +56,7 @@ public class AddCustomer extends Activity implements OnClickListener{
                 // database handler
                 DatabaseHandler db = new DatabaseHandler(getApplicationContext());
                 
- 
+                // Form validation, if input is invalid display toast message
                 if (newBoatName.trim().length() > 0 && newCptName.trim().length() > 0 && newBoatNo.trim().length() > 0 && newCptSIN.trim().length() > 0) {
                 	newBoat = new Boat(newBoatNo, newBoatName, newCptName);
                 	newCpt = new Crew(newCptName, newCptSIN);

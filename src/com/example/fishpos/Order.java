@@ -1,7 +1,5 @@
 package com.example.fishpos;
 
-import java.math.BigDecimal;
-
 public class Order {
 	int receiptNo;
 	String bname;

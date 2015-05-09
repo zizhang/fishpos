@@ -5,8 +5,6 @@ import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
-
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,7 +16,6 @@ import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -32,7 +29,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
- 
+
+/* Tab fragment for checking out a purchase 
+ * Need to be tested more and check for illegal inputs
+ * */
 public class CheckoutTab extends Fragment implements OnClickListener {
 	Button addButton, checkoutBtn;
 	TextView bNameField, tvDate, tvTotalPrice;
@@ -44,7 +44,7 @@ public class CheckoutTab extends Fragment implements OnClickListener {
 	CustomerAdapter custAdapter;
 	String fishTypeOutput = "";
 	String custOutput = "";
-	SharedPreferences uacPrefs;
+	SharedPreferences uacPrefs; // Store uac (fish tax) in shared preferences
 	EditText etUAC, etPricePerPound, etTotalWeight;
 	BigDecimal pricePerPound, totalWeight, totalPrice, amountPaid, uac;
 	Order newSale;
@@ -55,6 +55,7 @@ public class CheckoutTab extends Fragment implements OnClickListener {
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.checkouttab, container, false);
         
+        // Retrieve uac value
         uacPrefs = this.getActivity().getSharedPreferences("CASH_COUNTER", Context.MODE_PRIVATE);
         
         pricePerPound = new BigDecimal("0");
@@ -82,6 +83,7 @@ public class CheckoutTab extends Fragment implements OnClickListener {
         etUAC.setText((uac.setScale(2, RoundingMode.HALF_EVEN)).toString());
         tvTotalPrice.setText(String.format("$ %.2f", totalPrice));
         
+        // TODO: Requirement change: Don't get current date, allow user to enter date
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
         String currentDate = df.format(c.getTime());
@@ -95,11 +97,10 @@ public class CheckoutTab extends Fragment implements OnClickListener {
         etPricePerPound.addTextChangedListener(txtEditWatcherPricePerPound);
         etTotalWeight.addTextChangedListener(txtEditWatcherTotalWeight);
         
-        
+        // Dropdown displays all boats from customer database
         custSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View v, int position, long id) {
-                // your code here
                  
                 // Get selected row data to show on screen
                 /*String customer    = ((TextView) v.findViewById(R.id.cust_view)).getText().toString();
@@ -150,6 +151,7 @@ public class CheckoutTab extends Fragment implements OnClickListener {
  
         });
         
+        // Add a new customer (customer is a boat)
         addButton.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -167,12 +169,15 @@ public class CheckoutTab extends Fragment implements OnClickListener {
 
         });
         
+        // Add sale to sales table
+        // TODO: multiple fish types and weigh ins per sale. Need a slight redesign
         checkoutBtn.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
             	
             	String ppp = etPricePerPound.getText().toString();
+            	
             	String wt = etTotalWeight.getText().toString();
                 
                 // database handler
@@ -254,6 +259,7 @@ public class CheckoutTab extends Fragment implements OnClickListener {
         custSpinner.setAdapter(custAdapter);
     }
     
+    // TODO: add more fish types, remove pictures
     public void loadFishTypeSpinnerData() {
             SpinnerFishType fishType1 = new SpinnerFishType();
             SpinnerFishType fishType2 = new SpinnerFishType();
@@ -294,7 +300,6 @@ public class CheckoutTab extends Fragment implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		
 	}
 	
@@ -307,7 +312,6 @@ public class CheckoutTab extends Fragment implements OnClickListener {
 	
 	private final TextWatcher txtEditWatcherUAC = new TextWatcher() {
     	public void afterTextChanged(Editable s) {
-		    // TODO Auto-generated method stub
 			if(s.length() > 0) {
 				uac = new BigDecimal("" + etUAC.getText());
 				uacPrefs.edit().putFloat("UAC", Float.parseFloat("" + etUAC.getText())).apply();
@@ -316,19 +320,17 @@ public class CheckoutTab extends Fragment implements OnClickListener {
 		  @Override
 		  public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
 		      int arg3) {
-		    // TODO Auto-generated method stub
 		  }
 		  @Override
 		  public void onTextChanged(CharSequence s, int a, int b, int c) {
-		    // TODO Auto-generated method stub
 		  }
     };
     
     private final TextWatcher txtEditWatcherPricePerPound = new TextWatcher() {
     	public void afterTextChanged(Editable s) {
-		    // TODO Auto-generated method stub
 			if(s.length() > 0) {
-				pricePerPound = new BigDecimal("" + etPricePerPound.getText());
+				
+				pricePerPound = new BigDecimal("0" + etPricePerPound.getText());
 				totalPrice = pricePerPound.multiply(totalWeight);
 				
 				amountPaid = totalPrice.subtract(totalPrice.multiply(uac));
@@ -341,19 +343,17 @@ public class CheckoutTab extends Fragment implements OnClickListener {
 		  @Override
 		  public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
 		      int arg3) {
-		    // TODO Auto-generated method stub
 		  }
 		  @Override
 		  public void onTextChanged(CharSequence s, int a, int b, int c) {
-		    // TODO Auto-generated method stub
 		  }
     };
     
     private final TextWatcher txtEditWatcherTotalWeight = new TextWatcher() {
     	public void afterTextChanged(Editable s) {
-		    // TODO Auto-generated method stub
+    		// Use BigDecimal to avoid rounding errors
 			if(s.length() > 0) {
-				totalWeight = new BigDecimal("" + etTotalWeight.getText());
+				totalWeight = new BigDecimal("0" + etTotalWeight.getText());
 				totalPrice = pricePerPound.multiply(totalWeight);
 				
 				amountPaid = totalPrice.subtract(totalPrice.multiply(uac));
@@ -366,11 +366,9 @@ public class CheckoutTab extends Fragment implements OnClickListener {
 		  @Override
 		  public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
 		      int arg3) {
-		    // TODO Auto-generated method stub
 		  }
 		  @Override
 		  public void onTextChanged(CharSequence s, int a, int b, int c) {
-		    // TODO Auto-generated method stub
 		  }
     };
  

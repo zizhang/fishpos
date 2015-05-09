@@ -17,7 +17,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 
- 
+/* Fragment tab for keeping track of petty cash */ 
 public class CashCounterTab extends Fragment {
 	EditText ethundreds, etfifties, ettwenties, ettens, etfives, ettoonies, etloonies, etquarters, etdimes, etnickels;
 	TextView tvHundreds, tvFifties, tvTwenties, tvTens, tvFives, tvToonies, tvLoonies, tvQuarters, tvDimes, tvNickels, tvTotalCash;
@@ -101,6 +101,7 @@ public class CashCounterTab extends Fragment {
             }
 		});
 		
+		/* Store bills and coin quantities using Shared Preferences */
 		updateBtn.setOnClickListener(new OnClickListener() {
 			@Override
             public void onClick(View v) {
@@ -119,6 +120,7 @@ public class CashCounterTab extends Fragment {
             }
 		});
 		
+		/* Load previous cash counter values using Shared Preferences */
 		loadBtn.setOnClickListener(new OnClickListener() {
 			@Override
             public void onClick(View v) {
@@ -146,6 +148,7 @@ public class CashCounterTab extends Fragment {
             }
 		});
 		
+		/* Listensers to update total cash value whenever any field is changed */
 		ethundreds.addTextChangedListener(txtEditWatcher);
 		etfifties.addTextChangedListener(txtEditWatcher);
 		ettwenties.addTextChangedListener(txtEditWatcher);
@@ -250,6 +253,7 @@ public class CashCounterTab extends Fragment {
         return rootView;
     }
     
+    /* Calculate total cash on boat */
     public void updateTotalCash() {
     	double total100, total50, total20, total10, total5, totalToonies, totalLoonies, totalQuarters, totalDimes, totalNickels;
     	
@@ -331,6 +335,7 @@ public class CashCounterTab extends Fragment {
     	tvTotalCash.setText(String.format("$ %.2f", total));
     }
     
+    /* Monitors input fields and updates total cash when an input field is modified */
     private final TextWatcher  txtEditWatcher = new TextWatcher() {
     	public void afterTextChanged(Editable s) {
 		    // TODO Auto-generated method stub
