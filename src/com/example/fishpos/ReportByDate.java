@@ -115,7 +115,7 @@ public class ReportByDate extends Activity {
         	
         	row.setBackgroundColor(Color.LTGRAY);
         	
-            int receiptNo = allOrdersListByDate.get(i).getReceiptNo();
+            String receiptNo = allOrdersListByDate.get(i).getReceiptNo();
             long date = allOrdersListByDate.get(i).getDate();
             String name = allOrdersListByDate.get(i).getName();
             String fishType = allOrdersListByDate.get(i).getFishType();

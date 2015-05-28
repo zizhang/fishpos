@@ -165,7 +165,7 @@ public class ReportTab extends Fragment {
         	
         	row.setBackgroundColor(Color.LTGRAY);
         	
-            int receiptNo = allOrdersList.get(i).getReceiptNo();
+            String receiptNo = allOrdersList.get(i).getReceiptNo();
             long date = allOrdersList.get(i).getDate();
             String name = allOrdersList.get(i).getName();
             String fishType = allOrdersList.get(i).getFishType();
@@ -178,7 +178,7 @@ public class ReportTab extends Fragment {
             totalAmountPaid = totalAmountPaid.add(amtPaid);
             
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
-            String dateFormatted = sdf.format(new Date(date*1000));
+            String dateFormatted = sdf.format(new Date(date));
             
             
             TextView tvReceiptNo = new TextView(getActivity());

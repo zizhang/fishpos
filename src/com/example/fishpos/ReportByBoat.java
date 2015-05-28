@@ -122,7 +122,7 @@ public class ReportByBoat extends Activity {
         	
         	row.setBackgroundColor(Color.LTGRAY);
         	
-            int receiptNo = allOrdersListByBoat.get(i).getReceiptNo();
+            String receiptNo = allOrdersListByBoat.get(i).getReceiptNo();
             long date = allOrdersListByBoat.get(i).getDate();
             String name = allOrdersListByBoat.get(i).getName();
             String fishType = allOrdersListByBoat.get(i).getFishType();

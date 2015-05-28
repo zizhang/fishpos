@@ -63,8 +63,8 @@ public class SettingsTab extends Fragment {
 		final Calendar calendar = Calendar.getInstance();
 
 		year = datePrefs.getInt("YEAR", calendar.get(Calendar.YEAR));;
-		month = datePrefs.getInt("MONTH", calendar.get(Calendar.YEAR));;
-		day = datePrefs.getInt("DAY", calendar.get(Calendar.YEAR));;
+		month = datePrefs.getInt("MONTH", calendar.get(Calendar.MONTH));;
+		day = datePrefs.getInt("DAY", calendar.get(Calendar.DAY_OF_MONTH));;
 		
 		calendar.set(year, month, day);
 

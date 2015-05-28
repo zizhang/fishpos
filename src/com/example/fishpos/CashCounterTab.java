@@ -105,18 +105,31 @@ public class CashCounterTab extends Fragment {
 		updateBtn.setOnClickListener(new OnClickListener() {
 			@Override
             public void onClick(View v) {
-				cashCounterPrefs.edit().putLong("Hundreds", Long.parseLong("" + ethundreds.getText())).apply();
-				cashCounterPrefs.edit().putLong("Fifties", Long.parseLong("" + etfifties.getText())).apply();
-				cashCounterPrefs.edit().putLong("Twenties", Long.parseLong("" + ettwenties.getText())).apply();
-				cashCounterPrefs.edit().putLong("Tens", Long.parseLong("" + ettens.getText())).apply();
-				cashCounterPrefs.edit().putLong("Fives", Long.parseLong("" + etfives.getText())).apply();
-				cashCounterPrefs.edit().putLong("Toonies", Long.parseLong("" + ettoonies.getText())).apply();
-				cashCounterPrefs.edit().putLong("Loonies", Long.parseLong("" + etloonies.getText())).apply();
-				cashCounterPrefs.edit().putLong("Quarters", Long.parseLong("" + etquarters.getText())).apply();
-				cashCounterPrefs.edit().putLong("Dimes", Long.parseLong("" + etdimes.getText())).apply();
-				cashCounterPrefs.edit().putLong("Nickels", Long.parseLong("" + etnickels.getText())).apply();
-				
-				Toast.makeText(getActivity(), "Cash Counter Saved!", Toast.LENGTH_SHORT).show();
+				if(!(("" + ethundreds.getText()).matches("") || 
+						("" + etfifties.getText()).matches("") ||
+						("" + ettwenties.getText()).matches("") ||
+						("" + ettens.getText()).matches("") ||
+						("" + etfives.getText()).matches("") ||
+						("" + ettoonies.getText()).matches("") ||
+						("" + etloonies.getText()).matches("") ||
+						("" + etquarters.getText()).matches("") ||
+						("" + etdimes.getText()).matches("") ||
+						("" + etnickels.getText()).matches(""))) {
+					cashCounterPrefs.edit().putLong("Hundreds", Long.parseLong("" + ethundreds.getText())).apply();
+					cashCounterPrefs.edit().putLong("Fifties", Long.parseLong("" + etfifties.getText())).apply();
+					cashCounterPrefs.edit().putLong("Twenties", Long.parseLong("" + ettwenties.getText())).apply();
+					cashCounterPrefs.edit().putLong("Tens", Long.parseLong("" + ettens.getText())).apply();
+					cashCounterPrefs.edit().putLong("Fives", Long.parseLong("" + etfives.getText())).apply();
+					cashCounterPrefs.edit().putLong("Toonies", Long.parseLong("" + ettoonies.getText())).apply();
+					cashCounterPrefs.edit().putLong("Loonies", Long.parseLong("" + etloonies.getText())).apply();
+					cashCounterPrefs.edit().putLong("Quarters", Long.parseLong("" + etquarters.getText())).apply();
+					cashCounterPrefs.edit().putLong("Dimes", Long.parseLong("" + etdimes.getText())).apply();
+					cashCounterPrefs.edit().putLong("Nickels", Long.parseLong("" + etnickels.getText())).apply();
+					
+					Toast.makeText(getActivity(), "Cash Counter Saved!", Toast.LENGTH_SHORT).show();
+				} else {
+					Toast.makeText(getActivity(), "ERROR: One or more empty fields!", Toast.LENGTH_LONG).show();
+				}
             }
 		});
 		

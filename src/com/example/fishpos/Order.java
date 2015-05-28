@@ -1,7 +1,7 @@
 package com.example.fishpos;
 
 public class Order {
-	int receiptNo;
+	String receiptNo;
 	String bname;
 	String fishType;
 	long date;
@@ -13,8 +13,9 @@ public class Order {
 		
 	}
 	
+	
 	public Order(String bname, String fishType, double pricePerPound, double totalWeight, double amountPaid) {
-		this.receiptNo = 0;
+		this.receiptNo = "000000";
 		this.date = 0;
 		this.bname = bname;
 		this.fishType = fishType;
@@ -23,7 +24,17 @@ public class Order {
 		this.amountPaid = amountPaid;
 	}
 	
-	public Order(int receiptNo, long date, String bname, String fishType, double pricePerPound, double totalWeight, double amountPaid) {
+	public Order(long date, String bname, String fishType, double pricePerPound, double totalWeight, double amountPaid) {
+		this.receiptNo = "000000";
+		this.date = date;
+		this.bname = bname;
+		this.fishType = fishType;
+		this.pricePerPound = pricePerPound;
+		this.totalWeight = totalWeight;
+		this.amountPaid = amountPaid;
+	}
+	
+	public Order(String receiptNo, long date, String bname, String fishType, double pricePerPound, double totalWeight, double amountPaid) {
 		this.receiptNo = receiptNo;
 		this.date = date;
 		this.bname = bname;
@@ -49,11 +60,11 @@ public class Order {
 		this.amountPaid = amountPaid;
 	}
 	
-	public int getReceiptNo() {
+	public String getReceiptNo() {
 		return this.receiptNo;
 	}
 	
-	public void setReceiptNo(int receiptNo) {
+	public void setReceiptNo(String receiptNo) {
 		this.receiptNo = receiptNo;
 	}
 	

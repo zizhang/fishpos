@@ -9,6 +9,7 @@
     <string name="Fragment2">This is Fragment 2</string>
     <string name="Fragment3">This is Fragment 3</string>
     <string name="Boat">Boat</string>
+    <string name="ReceiptNo">Receipt No.</string>
     <string name="BoatName">Boat Name</string>
     <string name="FishType">Fish Type</string>
     <string name="PricePerPound">Price/lb   $</string>

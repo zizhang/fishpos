@@ -44,11 +44,15 @@ public class CheckoutTab extends Fragment implements OnClickListener {
 	CustomerAdapter custAdapter;
 	String fishTypeOutput = "";
 	String custOutput = "";
+	String currentDate;
 	SharedPreferences uacPrefs; // Store uac (fish tax) in shared preferences
-	EditText etUAC, etPricePerPound, etTotalWeight;
+	EditText etUAC, etPricePerPound, etTotalWeight, etReceiptNo;
 	BigDecimal pricePerPound, totalWeight, totalPrice, amountPaid, uac;
 	Order newSale;
-	String chkoutMsg;
+	String chkoutMsg, receiptNo;
+	long dateEpoch;
+	
+	SharedPreferences datePrefs;
 	
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,12 +60,15 @@ public class CheckoutTab extends Fragment implements OnClickListener {
         View rootView = inflater.inflate(R.layout.checkouttab, container, false);
         
         // Retrieve uac value
-        uacPrefs = this.getActivity().getSharedPreferences("CASH_COUNTER", Context.MODE_PRIVATE);
+        uacPrefs = this.getActivity().getSharedPreferences("UAC", Context.MODE_PRIVATE);
+        datePrefs = this.getActivity().getSharedPreferences("DATE", Context.MODE_PRIVATE);
         
+        // Initialization
         pricePerPound = new BigDecimal("0");
         totalWeight = new BigDecimal("0");
         uac = new BigDecimal(uacPrefs.getFloat("UAC", 0.02f));
         totalPrice = pricePerPound.multiply(totalWeight);
+        receiptNo = "000000";
         
         amountPaid = totalPrice.subtract(totalPrice.multiply(uac));
         
@@ -76,24 +83,35 @@ public class CheckoutTab extends Fragment implements OnClickListener {
         tvDate = (TextView) rootView.findViewById(R.id.currentDate);
         tvTotalPrice = (TextView) rootView.findViewById(R.id.totalPrice);
         
-        etUAC = (EditText) rootView.findViewById(R.id.uac);
+        //etUAC = (EditText) rootView.findViewById(R.id.uac);
         etPricePerPound = (EditText) rootView.findViewById(R.id.pricePerPoundInput);
         etTotalWeight = (EditText) rootView.findViewById(R.id.weightInput);
+        etReceiptNo = (EditText) rootView.findViewById(R.id.receiptNoInput);
         
-        etUAC.setText((uac.setScale(2, RoundingMode.HALF_EVEN)).toString());
+        //etUAC.setText((uac.setScale(2, RoundingMode.HALF_EVEN)).toString());
         tvTotalPrice.setText(String.format("$ %.2f", totalPrice));
         
         // Date can be changed in the Settings Tab
         Calendar c = Calendar.getInstance();
+        
+        // Get date from Shared Pref
+        
+        int year = datePrefs.getInt("YEAR", c.get(Calendar.YEAR));
+		int month = datePrefs.getInt("MONTH", c.get(Calendar.MONTH));
+		int day = datePrefs.getInt("DAY", c.get(Calendar.DAY_OF_MONTH));
+		
+		c.set(year, month, day);
+		
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-        String currentDate = df.format(c.getTime());
+        currentDate = df.format(c.getTime());
+        dateEpoch = c.getTimeInMillis();
         
         tvDate.setText(currentDate);
         
         loadCustSpinnerData();
         loadFishTypeSpinnerData();
         
-        etUAC.addTextChangedListener(txtEditWatcherUAC);
+        //etUAC.addTextChangedListener(txtEditWatcherUAC);
         etPricePerPound.addTextChangedListener(txtEditWatcherPricePerPound);
         etTotalWeight.addTextChangedListener(txtEditWatcherTotalWeight);
         
@@ -179,13 +197,21 @@ public class CheckoutTab extends Fragment implements OnClickListener {
             	String ppp = etPricePerPound.getText().toString();
             	
             	String wt = etTotalWeight.getText().toString();
+            	String receipt = etReceiptNo.getText().toString();
                 
                 // database handler
-                
-                if (ppp.trim().length() > 0 && wt.trim().length() > 0 ) {
+            	DatabaseHandler db = new DatabaseHandler(getActivity().getApplicationContext());
+            	
+            	if(!db.isUniqueReceipt(receipt)) {
+            		db.close();
+            		Toast.makeText(getActivity().getApplicationContext(), "Receipt # already exists!", Toast.LENGTH_SHORT).show();
+                    return;
+            	} else if (ppp.trim().length() > 0 && wt.trim().length() > 0 && receipt.trim().length() > 0) {
+                	newSale.setReceiptNo(receipt);
                 	newSale.setPricePerPound(pricePerPound.doubleValue());
                     newSale.setTotalWeight(totalWeight.doubleValue());
                     newSale.setAmountPaid(amountPaid.doubleValue());
+                    newSale.setDate(dateEpoch);
                     chkoutMsg = newSale.toString();
                 } else {
                     Toast.makeText(getActivity().getApplicationContext(), "Invalid Entry Field (PricePerPound/Weight)!", Toast.LENGTH_SHORT).show();
@@ -217,6 +243,7 @@ public class CheckoutTab extends Fragment implements OnClickListener {
     	                    
     	                    etTotalWeight.setText("");
     	                    etPricePerPound.setText("");
+    	                    db.close();
     					}
     				  });
      
@@ -233,14 +260,14 @@ public class CheckoutTab extends Fragment implements OnClickListener {
 
         });
         
-        etUAC.setOnFocusChangeListener(new OnFocusChangeListener() {
+        /*etUAC.setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				if(hasFocus) {
 					TextKeyListener.clear((etUAC).getText());
 				}
 			}
-		});
+		});*/
         
         return rootView;
     }
@@ -259,36 +286,26 @@ public class CheckoutTab extends Fragment implements OnClickListener {
         custSpinner.setAdapter(custAdapter);
     }
     
-    // TODO: add more fish types, remove pictures
     public void loadFishTypeSpinnerData() {
             SpinnerFishType fishType1 = new SpinnerFishType();
             SpinnerFishType fishType2 = new SpinnerFishType();
             SpinnerFishType fishType3 = new SpinnerFishType();
             SpinnerFishType fishType4 = new SpinnerFishType();
             SpinnerFishType fishType5 = new SpinnerFishType();
-            SpinnerFishType fishType6 = new SpinnerFishType();
-            SpinnerFishType fishType7 = new SpinnerFishType();
-            SpinnerFishType fishType8 = new SpinnerFishType();
             
                  
           	/******* Firstly take data in model object ******/
             // Images taken from http://www.charterboatsbc.com/fish.html
             
-            fishType1.setFishType("Sockeye");
+            fishType1.setFishType("Sockeye RD.");
         	
-            fishType2.setFishType("Coho");
-        	
-            fishType3.setFishType("Pink");
+            fishType2.setFishType("Pink RD.");
+           
+            fishType3.setFishType("Chums RD.");
             
-            fishType4.setFishType("Chum");
-            
-            fishType5.setFishType("Red Spring");
+            fishType4.setFishType("Red Spring DR.");
         	
-            fishType6.setFishType("White Spring");
-        	
-            fishType7.setFishType("Steelhead");
-            
-            fishType8.setFishType("Jacks");
+            fishType5.setFishType("White Spring DR.");
             
             
             
@@ -299,9 +316,6 @@ public class CheckoutTab extends Fragment implements OnClickListener {
             fishTypeList.add(fishType3);
             fishTypeList.add(fishType4);
             fishTypeList.add(fishType5);
-            fishTypeList.add(fishType6);
-            fishTypeList.add(fishType7);
-            fishTypeList.add(fishType8);
             
             // Resources passed to adapter to get image
             Resources res = getResources(); 
@@ -325,7 +339,8 @@ public class CheckoutTab extends Fragment implements OnClickListener {
 		loadFishTypeSpinnerData();
 	}
 	
-	private final TextWatcher txtEditWatcherUAC = new TextWatcher() {
+	/* UAC no longer set on this Tab, need to be set in Settings Tab */
+	/*private final TextWatcher txtEditWatcherUAC = new TextWatcher() {
     	public void afterTextChanged(Editable s) {
 			if(s.length() > 0) {
 				uac = new BigDecimal("" + etUAC.getText());
@@ -339,7 +354,7 @@ public class CheckoutTab extends Fragment implements OnClickListener {
 		  @Override
 		  public void onTextChanged(CharSequence s, int a, int b, int c) {
 		  }
-    };
+    };*/
     
     private final TextWatcher txtEditWatcherPricePerPound = new TextWatcher() {
     	public void afterTextChanged(Editable s) {

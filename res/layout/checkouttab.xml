@@ -28,7 +28,7 @@
 	            android:id="@+id/tableRow4"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:layout_margin="20dp" >
+	            android:layout_margin="5dp" >
 	            
 	            <TextView
 			         android:id="@+id/currentDate"
@@ -37,7 +37,7 @@
 			         android:layout_gravity="left"
 			         android:layout_weight="3"
 			         android:textAppearance="?android:attr/textAppearanceLarge"/>
-	            
+	            <!--  
 	            <Button
 			        android:id="@+id/btnChangeDate"
 			        android:layout_width="wrap_content"
@@ -45,6 +45,7 @@
 			        android:layout_weight="0.1"
 			        style="@style/btnStyleBlackpearl"
 			        android:text="@string/dateChange" />
+		        -->
 	            <!--  
 	            <TextView
 	                android:id="@+id/dummy"
@@ -55,13 +56,36 @@
 	            
 	            
 	        </TableRow>
+	        
+            <TableRow
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_margin="5dp" >
+	
+	            <TextView
+	                android:id="@+id/ReceiptNo"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/ReceiptNo"
+	                android:textAppearance="?android:attr/textAppearanceLarge" />
+	            
+	            <EditText
+	                android:id="@+id/receiptNoInput"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:ems="10"
+	                android:imeOptions="actionDone"
+	                android:inputType="number" >
+	                
+	            </EditText>
+	        </TableRow>
 	
 	        <TableRow
 	            android:id="@+id/tableRow1"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:gravity="center_vertical"
-	            android:layout_margin="20dp" >
+	            android:layout_margin="5dp" >
 	
 	            <TextView
 	                android:id="@+id/boatLabel"
@@ -91,7 +115,7 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:gravity="center_vertical"
-	            android:layout_margin="20dp" >
+	            android:layout_margin="5dp" >
 	
 	            <TextView
 	                android:id="@+id/fishTypeLabel"
@@ -112,7 +136,7 @@
 	            android:id="@+id/tableRow3"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:layout_margin="20dp" >
+	            android:layout_margin="5dp" >
 	
 	            <TextView
 	                android:id="@+id/pricePerPoundLabel"
@@ -135,7 +159,7 @@
 	        <TableRow
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:layout_margin="20dp" >
+	            android:layout_margin="5dp" >
 	
 	            <TextView
 	                android:id="@+id/Weight"
@@ -174,35 +198,16 @@
             <TableRow
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:layout_margin="20dp" >
+	            android:layout_margin="5dp" >
 	    		
-                <TextView
-	                android:id="@+id/uacLabel"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"
-	                android:text="@string/UAC"
-	                android:textAppearance="?android:attr/textAppearanceLarge" />
-	            
-	            <EditText
-	                android:id="@+id/uac"
-	                android:layout_width="0dp"
-	                android:layout_height="wrap_content"
-	                android:layout_weight="1"
-	                android:ems="10"
-	                android:imeOptions="actionDone"
-	                android:inputType="numberDecimal" />
-	            <TextView
-	                android:id="@+id/dummy"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"
-	                android:layout_weight="3"/>
+                
 	        
 	        </TableRow>
 	        
             <TableRow
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:layout_margin="20dp" >
+	            android:layout_margin="5dp" >
 	    
 	        
 	        </TableRow>
@@ -210,7 +215,7 @@
             <TableRow
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:layout_margin="20dp" >
+	            android:layout_margin="5dp" >
 	    
 		        <TextView
 			         android:layout_width="wrap_content"
@@ -224,7 +229,7 @@
             <TableRow
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:layout_margin="20dp" >
+	            android:layout_margin="5dp" >
 	    
 		        <TextView
 		            android:id="@+id/totalPrice"

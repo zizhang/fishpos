@@ -61,7 +61,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         
         
         String CREATE_ORDERS_TABLE = "CREATE TABLE " + TABLE_ORDERS + "(" 
-        		+ KEY_RECEIPT_NO + " INTEGER PRIMARY KEY," + KEY_DATE + " INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))," + KEY_NAME + " TEXT," + KEY_FISH_TYPE + " TEXT,"
+        		+ KEY_RECEIPT_NO + " TEXT PRIMARY KEY," + KEY_DATE + " INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))," + KEY_NAME + " TEXT," + KEY_FISH_TYPE + " TEXT,"
         		+ KEY_PRICE + " REAL," + KEY_WEIGHT + " REAL," + KEY_AMOUNT_PAID + " REAL" +  ")";
         db.execSQL(CREATE_BOATS_TABLE);
         db.execSQL(CREATE_CREWS_TABLE);
@@ -118,7 +118,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     	SQLiteDatabase db = this.getWritableDatabase();
     	 
         ContentValues values = new ContentValues();
-        
+        values.put(KEY_RECEIPT_NO, newOrder.getReceiptNo());
+        values.put(KEY_DATE, newOrder.getDate());
         values.put(KEY_NAME, newOrder.getName()); // Customer Info
         values.put(KEY_FISH_TYPE, newOrder.getFishType()); // Fish Type
         values.put(KEY_PRICE, newOrder.getPricePerPound()); // Price
@@ -220,7 +221,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Order ord = new Order();
-                ord.setReceiptNo(Integer.parseInt(cursor.getString(0)));
+                ord.setReceiptNo(cursor.getString(0));
                 ord.setDate(Long.parseLong(cursor.getString(1)));
                 ord.setName(cursor.getString(2));
                 ord.setFishType(cursor.getString(3));
@@ -252,7 +253,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Order ord = new Order();
-                ord.setReceiptNo(Integer.parseInt(cursor.getString(0)));
+                ord.setReceiptNo(cursor.getString(0));
                 ord.setDate(Long.parseLong(cursor.getString(1)));
                 ord.setName(cursor.getString(2));
                 ord.setFishType(cursor.getString(3));
@@ -284,7 +285,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Order ord = new Order();
-                ord.setReceiptNo(Integer.parseInt(cursor.getString(0)));
+                ord.setReceiptNo(cursor.getString(0));
                 ord.setDate(Long.parseLong(cursor.getString(1)));
                 ord.setName(cursor.getString(2));
                 ord.setFishType(cursor.getString(3));
@@ -296,10 +297,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         
+        cursor.close();
         db.close();
      
         // return contact list
         return ordList;
+    }
+    
+    public boolean isUniqueReceipt(String receipt) {
+    	String selectQuery = "SELECT  * FROM " + TABLE_ORDERS + " WHERE " + KEY_RECEIPT_NO + "= '" + receipt + "'";
+        
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        
+        Log.i("ReceiptNoCount", "= " + cursor.getCount());     
+        if(cursor.getCount() <= 0){
+            cursor.close();
+            return true;
+        }
+	    cursor.close();
+	    return false;
     }
      
     // Getting contacts Count
