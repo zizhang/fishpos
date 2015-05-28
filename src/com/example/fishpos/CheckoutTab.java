@@ -208,8 +208,9 @@ public class CheckoutTab extends Fragment implements OnClickListener {
                     return;
             	} else if (ppp.trim().length() > 0 && wt.trim().length() > 0 && receipt.trim().length() > 0) {
                 	newSale.setReceiptNo(receipt);
-                	newSale.setPricePerPound(pricePerPound.doubleValue());
-                    newSale.setTotalWeight(totalWeight.doubleValue());
+                	//newSale.setPricePerPound(pricePerPound.doubleValue());
+                    //newSale.setTotalWeight(totalWeight.doubleValue());
+                	newSale.addOrderItem(pricePerPound.doubleValue(), totalWeight.doubleValue());
                     newSale.setAmountPaid(amountPaid.doubleValue());
                     newSale.setDate(dateEpoch);
                     chkoutMsg = newSale.toString();

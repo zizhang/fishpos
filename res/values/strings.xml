@@ -12,6 +12,7 @@
     <string name="ReceiptNo">Receipt No.</string>
     <string name="BoatName">Boat Name</string>
     <string name="FishType">Fish Type</string>
+    <string name="add_order_item">Add Order Item</string>
     <string name="PricePerPound">Price/lb   $</string>
     <string name="Weight">Weight</string>
     <string name="totalPrice">Total Price</string>

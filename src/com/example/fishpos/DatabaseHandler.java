@@ -38,6 +38,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Order Table Columns names
     private static final String KEY_RECEIPT_NO = "receiptNo";
     private static final String KEY_DATE = "saleDate";
+    private static final String KEY_BNO = "bNo";
     private static final String KEY_NAME = "bname";
     private static final String KEY_FISH_TYPE = "fishType";
     private static final String KEY_PRICE = "price";
@@ -61,7 +62,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         
         
         String CREATE_ORDERS_TABLE = "CREATE TABLE " + TABLE_ORDERS + "(" 
-        		+ KEY_RECEIPT_NO + " TEXT PRIMARY KEY," + KEY_DATE + " INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))," + KEY_NAME + " TEXT," + KEY_FISH_TYPE + " TEXT,"
+        		+ KEY_RECEIPT_NO + " TEXT PRIMARY KEY," + KEY_DATE + " INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))," + KEY_NAME + " TEXT," + KEY_BNO + "TEXT," + KEY_FISH_TYPE + " TEXT,"
         		+ KEY_PRICE + " REAL," + KEY_WEIGHT + " REAL," + KEY_AMOUNT_PAID + " REAL" +  ")";
         db.execSQL(CREATE_BOATS_TABLE);
         db.execSQL(CREATE_CREWS_TABLE);
@@ -121,10 +122,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_RECEIPT_NO, newOrder.getReceiptNo());
         values.put(KEY_DATE, newOrder.getDate());
         values.put(KEY_NAME, newOrder.getName()); // Customer Info
+        values.put(KEY_BNO, newOrder.getNo());
         values.put(KEY_FISH_TYPE, newOrder.getFishType()); // Fish Type
-        values.put(KEY_PRICE, newOrder.getPricePerPound()); // Price
-        values.put(KEY_WEIGHT, newOrder.getTotalWeight()); // Total weight
+        //values.put(KEY_PRICE, newOrder.getPricePerPound()); // Price
+        //values.put(KEY_WEIGHT, newOrder.getTotalWeight()); // Total weight
         values.put(KEY_AMOUNT_PAID, newOrder.getAmountPaid()); // Amount paid in cents
+        
+        ArrayList<OrderItem> newOrderItems = newOrder.getAllOrderItems();
+        
+        for(OrderItem item : newOrderItems) {
+        	
+        }
         
      
         // Inserting Row
