@@ -18,39 +18,42 @@
         android:orientation="horizontal">
         
         <TableLayout
-	        android:id="@+id/tableLayout1"
-	        android:layout_width="0dp"
-	        android:layout_height="wrap_content"
-	        android:layout_gravity="center"
-	        android:layout_weight="2" >
+            android:id="@+id/tableLayout1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1.00" >
 	        
             <TableRow
 	            android:id="@+id/tableRow4"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_margin="20dp" >
-	
+	            
 	            <TextView
-	                android:id="@+id/uacLabel"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"
-	                android:text="@string/UAC"
-	                android:textAppearance="?android:attr/textAppearanceLarge" />
+			         android:id="@+id/currentDate"
+			         android:layout_width="wrap_content"
+			         android:layout_height="wrap_content"
+			         android:layout_gravity="left"
+			         android:layout_weight="3"
+			         android:textAppearance="?android:attr/textAppearanceLarge"/>
 	            
-	            <EditText
-	                android:id="@+id/uac"
-	                android:layout_width="0dp"
-	                android:layout_height="wrap_content"
-	                android:layout_weight="1"
-	                android:ems="10"
-	                android:imeOptions="actionDone"
-	                android:inputType="numberDecimal" />
-	            
+	            <Button
+			        android:id="@+id/btnChangeDate"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="0.1"
+			        style="@style/btnStyleBlackpearl"
+			        android:text="@string/dateChange" />
+	            <!--  
 	            <TextView
 	                android:id="@+id/dummy"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:layout_weight="3"/>
+	                android:layout_weight="1"/>
+	                -->
+	            
+	            
 	        </TableRow>
 	
 	        <TableRow
@@ -172,21 +175,27 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_margin="20dp" >
-	    
-		        <TextView
-			         android:id="@+id/currentDate"
-			         android:layout_width="wrap_content"
-			         android:layout_height="wrap_content"
-			         android:layout_gravity="left"
-			         android:textAppearance="?android:attr/textAppearanceLarge"/>
-	        
-	        </TableRow>
-	        
-            <TableRow
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_margin="20dp" >
-	    
+	    		
+                <TextView
+	                android:id="@+id/uacLabel"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/UAC"
+	                android:textAppearance="?android:attr/textAppearanceLarge" />
+	            
+	            <EditText
+	                android:id="@+id/uac"
+	                android:layout_width="0dp"
+	                android:layout_height="wrap_content"
+	                android:layout_weight="1"
+	                android:ems="10"
+	                android:imeOptions="actionDone"
+	                android:inputType="numberDecimal" />
+	            <TextView
+	                android:id="@+id/dummy"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_weight="3"/>
 	        
 	        </TableRow>
 	        
@@ -207,7 +216,7 @@
 			         android:layout_width="wrap_content"
 			         android:layout_height="wrap_content"
 			         android:layout_gravity="center"
-			         android:text="@string/totalPrice"
+			         android:text="@string/subtotal"
 			         android:textAppearance="?android:attr/textAppearanceLarge"/>
 	        
 	        </TableRow>

@@ -11,11 +11,12 @@ import android.os.Bundle;
 public class MainActivity extends Activity {
 	
 	// Declare Tab Variable
-    ActionBar.Tab Tab1, Tab2, Tab3, Tab4;
+    ActionBar.Tab Tab1, Tab2, Tab3, Tab4, Tab5;
     Fragment checkouttab = new CheckoutTab();
     Fragment reporttab = new ReportTab();
     Fragment customertab = new CustomerTab();
     Fragment cashcountertab = new CashCounterTab();
+    Fragment settingstab = new SettingsTab();
     
     SharedPreferences prefs;
     
@@ -40,19 +41,22 @@ public class MainActivity extends Activity {
         // Set Tab Icon and Titles
         Tab1 = actionBar.newTab().setText("Checkout");
         Tab2 = actionBar.newTab().setText("View Sales");
-        Tab3 = actionBar.newTab().setText("View Customers");
+        Tab3 = actionBar.newTab().setText("View Boats");
         Tab4 = actionBar.newTab().setText("Cash Counter");
+        Tab5 = actionBar.newTab().setText("Settings");
  
         // Set Tab Listeners
         Tab1.setTabListener(new TabListener(checkouttab));
         Tab2.setTabListener(new TabListener(reporttab));
         Tab3.setTabListener(new TabListener(customertab));
         Tab4.setTabListener(new TabListener(cashcountertab));
+        Tab5.setTabListener(new TabListener(settingstab));
  
         // Add tabs to actionbar
         actionBar.addTab(Tab1);
         actionBar.addTab(Tab2);
         actionBar.addTab(Tab3);
         actionBar.addTab(Tab4);
+        actionBar.addTab(Tab5);
     }
 }

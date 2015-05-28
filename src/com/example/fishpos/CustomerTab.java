@@ -48,7 +48,7 @@ public class CustomerTab extends Fragment {
         
         TextView headBoatNo = new TextView(getActivity());
         headBoatNo.setId(21);
-        headBoatNo.setText("Boat Number");
+        headBoatNo.setText("CFV #");
         headBoatNo.setTextColor(Color.WHITE);
         headBoatNo.setTextSize(25);
         headBoatNo.setPadding(5, 5, 5, 5);

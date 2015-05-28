@@ -18,12 +18,19 @@
     <string name="Phone">Phone</string>
     <string name="Add">Add</string>
     <string name="UAC">UAC</string>
+    <string name="changeDateLabel">Change Date</string>
+    <string name="currentDateLabel">Current Date:</string>
+    <string name="set_uac">Set</string>
+    <string name="rstBoatTable">Drop Boat Table</string>
+    <string name="rstOrderTable">Drop Sales Table</string>
     <string name="Plus">+</string>
     <string name="title_activity_add_customer">Add Customer</string>
     <string name="reportByDate">View All Sales By Date</string>
     <string name="reportByBoat">View Sales By Boat</string>
     <string name="enterBoatName">Enter Boat Name</string>
+    <string name="subtotal">Subtotal</string>
     <string name="selectFishType">Select Fish Type</string>
+    <string name="dateChange">Change Date</string>
     <string name="Clear">Clear</string>
     <string name="CptName">Captain Name</string>
     <string name="CrewName">Crew Name</string>
@@ -50,7 +57,7 @@
     
     <color name="black">#000000</color>
     
-    <string name="BoatNo">Boat #</string>
+    <string name="BoatNo">CFV #</string>
     
     <string name="CustName">Customer Name</string>
     

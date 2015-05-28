@@ -83,7 +83,7 @@ public class CheckoutTab extends Fragment implements OnClickListener {
         etUAC.setText((uac.setScale(2, RoundingMode.HALF_EVEN)).toString());
         tvTotalPrice.setText(String.format("$ %.2f", totalPrice));
         
-        // TODO: Requirement change: Don't get current date, allow user to enter date
+        // Date can be changed in the Settings Tab
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
         String currentDate = df.format(c.getTime());
@@ -265,21 +265,32 @@ public class CheckoutTab extends Fragment implements OnClickListener {
             SpinnerFishType fishType2 = new SpinnerFishType();
             SpinnerFishType fishType3 = new SpinnerFishType();
             SpinnerFishType fishType4 = new SpinnerFishType();
+            SpinnerFishType fishType5 = new SpinnerFishType();
+            SpinnerFishType fishType6 = new SpinnerFishType();
+            SpinnerFishType fishType7 = new SpinnerFishType();
+            SpinnerFishType fishType8 = new SpinnerFishType();
+            
                  
           	/******* Firstly take data in model object ******/
             // Images taken from http://www.charterboatsbc.com/fish.html
             
             fishType1.setFishType("Sockeye");
-            fishType1.setImageFile(R.drawable.sockeye);
         	
-            fishType2.setFishType("Pink");
-            fishType2.setImageFile(R.drawable.pink_salmon);
+            fishType2.setFishType("Coho");
         	
-            fishType3.setFishType("Spring");
-            fishType3.setImageFile(R.drawable.spring);
+            fishType3.setFishType("Pink");
             
             fishType4.setFishType("Chum");
-            fishType4.setImageFile(R.drawable.chum);
+            
+            fishType5.setFishType("Red Spring");
+        	
+            fishType6.setFishType("White Spring");
+        	
+            fishType7.setFishType("Steelhead");
+            
+            fishType8.setFishType("Jacks");
+            
+            
             
             /******** Take Model Object in ArrayList **********/
             fishTypeList = new ArrayList<SpinnerFishType>();
@@ -287,6 +298,10 @@ public class CheckoutTab extends Fragment implements OnClickListener {
             fishTypeList.add(fishType2);
             fishTypeList.add(fishType3);
             fishTypeList.add(fishType4);
+            fishTypeList.add(fishType5);
+            fishTypeList.add(fishType6);
+            fishTypeList.add(fishType7);
+            fishTypeList.add(fishType8);
             
             // Resources passed to adapter to get image
             Resources res = getResources(); 

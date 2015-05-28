@@ -60,12 +60,10 @@ public class FishTypeAdapter extends ArrayAdapter<String>{
         tempValues = (SpinnerFishType) data.get(position);
          
         TextView label        = (TextView) row.findViewById(R.id.fishType);
-        ImageView fishTypeImage = (ImageView) row.findViewById(R.id.image);
          
         
         // Set values for spinner each row 
         label.setText(tempValues.getFishType());
-        fishTypeImage.setImageResource(tempValues.getImageFile());
              
  
         return row;

@@ -1,0 +1,117 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/SettingsTabLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".DatabaseActivity" >
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_margin="5dp" >
+
+            <TextView
+				android:id="@+id/uacLabel"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/UAC"
+				android:textAppearance="?android:attr/textAppearanceLarge" />
+	            
+	        <EditText
+	            android:id="@+id/uacSettings"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:ems="10"
+	            android:imeOptions="actionDone"
+	            android:inputType="numberDecimal" />
+
+        </TableRow>
+        
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_margin="5dp" >
+
+            <Button
+	            android:id="@+id/setUACbtn"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            style="@style/btnStyleBlackpearl"
+	            android:text="@string/set_uac" />
+
+        </TableRow>
+        
+        <TableRow
+            android:id="@+id/dbDropTable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_margin="5dp" >
+
+            <Button
+	            android:id="@+id/dropBoatTable"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/rstBoatTable" />
+            
+            <Button
+	            android:id="@+id/dropOrderTable"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/rstOrderTable" />
+
+        </TableRow>
+        
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_margin="5dp" >
+			
+            <TextView
+		        android:id="@+id/lblDate"
+		        android:layout_marginRight="50dp"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/currentDateLabel"
+		        android:textAppearance="?android:attr/textAppearanceLarge" />
+ 
+		    <TextView
+		        android:id="@+id/tvDate"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text=""
+		        android:textAppearance="?android:attr/textAppearanceLarge" />
+		    
+        </TableRow>
+    </TableLayout>
+    
+    <LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:gravity="center_horizontal"
+	    android:orientation="vertical" >
+    
+	    <DatePicker
+	        android:id="@+id/date_picker"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" />
+	    
+	    <Button
+	        android:id="@+id/btnChangeDate"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/changeDateLabel" />
+    </LinearLayout>
+
+</LinearLayout>
