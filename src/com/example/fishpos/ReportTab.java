@@ -28,7 +28,7 @@ public class ReportTab extends Fragment {
 	BigDecimal totalAmountPaid;
 	TextView tvTotalAmountPaid;
 	Button dateBtn, boatBtn;
-	Intent sortByDateIntent, sortByBoatIntent;
+	Intent sortByDateIntent, sortByBoatIntent, viewOrderIntent;
 	EditText etBoatName;
 	
     @Override
@@ -241,10 +241,9 @@ public class ReportTab extends Fragment {
                 	Log.i("DEBUG", "Button id = " + v.getTag());
                 	Activity activity = getActivity();
                     
-                    sortByBoatIntent = new Intent(activity, ReportByBoat.class);
-                    sortByBoatIntent.putExtra("searchBoatName", "" + etBoatName.getText());
-                    TextKeyListener.clear((etBoatName).getText());
-                    startActivityForResult(sortByBoatIntent, 101);
+                	viewOrderIntent = new Intent(activity, ViewOrder.class);
+                	viewOrderIntent.putExtra("orderReceiptNo", "" + v.getTag());
+                    startActivityForResult(viewOrderIntent, 101);
                 }
             });
             

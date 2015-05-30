@@ -23,8 +23,10 @@
     <string name="Add">Add</string>
     <string name="UAC">UAC</string>
     <string name="changeDateLabel">Change Date</string>
+    <string name="date">Date</string>
     <string name="currentDateLabel">Current Date:</string>
     <string name="set_uac">Set</string>
+    <string name="amount_paid">Amount Paid</string>
     <string name="rstBoatTable">Drop Boat Table</string>
     <string name="rstOrderTable">Drop Sales Table</string>
     <string name="Plus">+</string>
@@ -40,6 +42,7 @@
     <string name="CrewName">Crew Name</string>
     <string name="SIN">SIN</string>
     <string name="byDate">By Date</string>
+    <string name="viewOrder">Order Details</string>
     <string name="Update">Update</string>
     <string name="searchBoat">Search Boat</string>
     <string name="hundreds">100s</string>

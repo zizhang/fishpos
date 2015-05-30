@@ -35,6 +35,10 @@
             android:name=".ReportByBoat"
             android:label="@string/reportByBoat" >
         </activity>
+        <activity
+            android:name=".ViewOrder"
+            android:label="@string/viewOrder" >
+        </activity>
     </application>
 
 </manifest>

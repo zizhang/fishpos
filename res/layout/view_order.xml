@@ -4,9 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
  
-    <!-- 2 columns -->
     <TableRow
-        android:id="@+id/tableRow1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
@@ -21,57 +19,88 @@
             android:id="@+id/orderReceiptNo"
             android:textAppearance="?android:attr/textAppearanceLarge" />
     </TableRow>
+    
+    <TableRow
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:padding="5dip" >
+ 
+        <TextView
+            android:text="@string/date"
+            android:layout_marginRight="20dp"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+ 
+        <TextView
+            android:id="@+id/orderDate"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+    </TableRow>
+    
+    <TableRow
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:padding="5dip" >
+ 
+        <TextView
+            android:text="@string/BoatNo"
+            android:layout_marginRight="20dp"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+ 
+        <TextView
+            android:id="@+id/orderBoatNo"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+    </TableRow>
+    
+    <TableRow
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:padding="5dip" >
+ 
+        <TextView
+            android:text="@string/BoatName"
+            android:layout_marginRight="20dp"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+ 
+        <TextView
+            android:id="@+id/orderBoatName"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+    </TableRow>
+    
+    <TableRow
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:padding="5dip" >
+ 
+        <TextView
+            android:text="@string/amount_paid"
+            android:layout_marginRight="20dp"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+ 
+        <TextView
+            android:id="@+id/orderAmountPaid"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+    </TableRow>
  
     <!-- just draw a black line -->
     <View
         android:layout_height="2dip"
         android:background="#000000" />
- 
-    <!-- 3 columns -->
-    <TableRow
-        android:id="@+id/tableRow3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="5dip" >
- 
-        <TextView
-            android:id="@+id/textView2"
-            android:text="Column 1"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
- 
-        <Button
-            android:id="@+id/button2"
-            android:text="Column 2" />
- 
-        <Button
-            android:id="@+id/button3"
-            android:text="Column 3" />
-    </TableRow>
- 
-    <!-- display this button in 3rd column via layout_column(zero based) -->
-    <TableRow
-        android:id="@+id/tableRow4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="5dip" >
- 
-        <Button
-            android:id="@+id/button4"
-            android:layout_column="2"
-            android:text="Column 3" />
-    </TableRow>
- 
-    <!-- display this button in 2nd column via layout_column(zero based) -->
-    <TableRow
-        android:id="@+id/tableRow5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="5dip" >
- 
-        <Button
-            android:id="@+id/button5"
-            android:layout_column="1"
-            android:text="Column 2" />
-    </TableRow>
+    
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <TableLayout
+            android:id="@+id/orderItems"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:padding="5dp"
+            android:stretchColumns="*" >
+        </TableLayout>
+    </ScrollView>
  
 </TableLayout>
