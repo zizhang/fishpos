@@ -5,6 +5,8 @@ import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,26 +19,32 @@ import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.ListFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Color;
 
 /* Tab fragment for checking out a purchase 
  * Need to be tested more and check for illegal inputs
  * */
 public class CheckoutTab extends Fragment implements OnClickListener {
 	Button addButton, checkoutBtn, addOrderItemBtn;
-	TextView bNameField, tvDate, tvTotalPrice;
+	TextView bNameField, tvDate, tvTotalPrice, tvUAC, tvSubTotalPrice, tvLessUAC;
 	Intent addCustIntent;
 	Spinner custSpinner, fishTypeSpinner;
 	ArrayList<Boat> custList;
@@ -48,11 +56,13 @@ public class CheckoutTab extends Fragment implements OnClickListener {
 	String currentDate;
 	SharedPreferences uacPrefs; // Store uac (fish tax) in shared preferences
 	EditText etUAC, etPricePerPound, etTotalWeight, etReceiptNo;
-	BigDecimal pricePerPound, totalWeight, totalPrice, amountPaid, uac, itemPrice;
+	BigDecimal pricePerPound, totalWeight, totalPrice, amountPaid, uac, itemPrice, lessUAC;
 	Order newSale;
 	String chkoutMsg, receiptNo;
 	long dateEpoch;
 	String fishTypeSelected = "Sockeye RD.";
+	ListView checkoutListFragment;
+	TableLayout checkoutTable;
 	
 	SharedPreferences datePrefs;
 	
@@ -70,12 +80,15 @@ public class CheckoutTab extends Fragment implements OnClickListener {
         totalWeight = new BigDecimal("0");
         itemPrice = new BigDecimal("0");
         uac = new BigDecimal(uacPrefs.getFloat("UAC", 0.02f));
-        totalPrice = new BigDecimal("0");;
+        totalPrice = new BigDecimal("0");
+        lessUAC = new BigDecimal("0");
         receiptNo = "000000";
         
         amountPaid = totalPrice.subtract(totalPrice.multiply(uac));
         
         newSale = new Order();
+        
+        checkoutTable = (TableLayout) rootView.findViewById(R.id.checkoutTable);
         
         addOrderItemBtn = (Button) rootView.findViewById(R.id.addOrderItem);
         addButton = (Button) rootView.findViewById(R.id.addCustBtn);
@@ -86,6 +99,9 @@ public class CheckoutTab extends Fragment implements OnClickListener {
         
         tvDate = (TextView) rootView.findViewById(R.id.currentDate);
         tvTotalPrice = (TextView) rootView.findViewById(R.id.totalPrice);
+        tvUAC = (TextView) rootView.findViewById(R.id.uacLabel);
+        tvSubTotalPrice = (TextView) rootView.findViewById(R.id.subTotalPrice);
+        tvLessUAC = (TextView) rootView.findViewById(R.id.lessUAC);
         
         //etUAC = (EditText) rootView.findViewById(R.id.uac);
         etPricePerPound = (EditText) rootView.findViewById(R.id.pricePerPoundInput);
@@ -93,7 +109,11 @@ public class CheckoutTab extends Fragment implements OnClickListener {
         etReceiptNo = (EditText) rootView.findViewById(R.id.receiptNoInput);
         
         //etUAC.setText((uac.setScale(2, RoundingMode.HALF_EVEN)).toString());
-        tvTotalPrice.setText(String.format("$ %.2f", totalPrice));
+        tvTotalPrice.setText(String.format("$ %.2f", amountPaid));
+        tvSubTotalPrice.setText(String.format("$ %.2f", totalPrice));
+        tvLessUAC.setText(String.format("$ %.2f", lessUAC));
+        
+        tvUAC.setText(String.format("UAC %.3f", uac.doubleValue()));
         
         // Date can be changed in the Settings Tab
         Calendar c = Calendar.getInstance();
@@ -214,9 +234,12 @@ public class CheckoutTab extends Fragment implements OnClickListener {
                 	newSale.setReceiptNo(receipt);
                 	//newSale.setPricePerPound(pricePerPound.doubleValue());
                     //newSale.setTotalWeight(totalWeight.doubleValue());
+                	updateTotals();
                 	newSale.addOrderItem(fishTypeSelected, pricePerPound.doubleValue(), totalWeight.doubleValue(), itemPrice.doubleValue());
                 	
-                	updateTotals();
+                	Log.i("DEBUG", "Order Item Size = " + (newSale.getAllOrderItems()).size());
+                	
+                	updateTable();
                 	
                 	etPricePerPound.setText("");
                 	etTotalWeight.setText("");
@@ -295,8 +318,12 @@ public class CheckoutTab extends Fragment implements OnClickListener {
     	                    totalPrice = new BigDecimal("0");
     	                    amountPaid = new BigDecimal("0");
     	                    
+    	                    checkoutTable.removeAllViews();
+    	                    
     	                    // Textviews should display zeros
     	                    tvTotalPrice.setText("$" + amountPaid.setScale(2, RoundingMode.HALF_EVEN));
+    	                    tvSubTotalPrice.setText("$" + totalPrice.setScale(2, RoundingMode.HALF_EVEN));
+    	                    tvLessUAC.setText("$" + totalPrice.setScale(2, RoundingMode.HALF_EVEN));
     	                    
     	                    
     	                    db.close();
@@ -383,6 +410,58 @@ public class CheckoutTab extends Fragment implements OnClickListener {
             fishTypeSpinner.setAdapter(fishTypeAdapter);
     }
     
+    public void updateTable() {
+    	ArrayList<OrderItem> allOrderItems = newSale.getAllOrderItems();
+    	
+    	/*
+    	TableRow tr_head = new TableRow(getActivity());
+        tr_head.setId(24);
+        tr_head.setBackgroundColor(Color.DKGRAY);
+        
+        TextView headReceiptNo = new TextView(getActivity());
+        headReceiptNo.setId(25);
+        headReceiptNo.setText("");
+        headReceiptNo.setTextColor(Color.WHITE);
+        headReceiptNo.setTextSize(25);
+        headReceiptNo.setPadding(5, 5, 5, 5);
+        tr_head.addView(headReceiptNo);// add the column to the table row here
+        
+        checkoutTable.addView(tr_head);*/
+        
+    	
+        //for(int i=0;i < allOrderItems.size(); i++)
+       // {
+    	if(allOrderItems.size() > 0) {
+        	TableRow row = new TableRow(getActivity());
+        	
+        	row.setBackgroundColor(Color.LTGRAY);
+        	
+            String itemFishType = allOrderItems.get(allOrderItems.size()-1).getFishType();
+            double itemPrice = allOrderItems.get(allOrderItems.size()-1).getPrice();
+            
+            TextView tvItemFishType = new TextView(getActivity());
+            tvItemFishType.setTextColor(Color.BLACK);
+            tvItemFishType.setTextSize(18);
+            tvItemFishType.setText(itemFishType);
+            
+            TextView tvItemPrice = new TextView(getActivity());
+            tvItemPrice.setTextColor(Color.BLACK);
+            tvItemPrice.setTextSize(18);
+            tvItemPrice.setText(String.format("$%.2f" , itemPrice));
+            
+            
+            
+            
+            row.addView(tvItemFishType);
+            row.addView(tvItemPrice);
+            
+            checkoutTable.addView(row);
+       // }
+    	}
+    	
+    	
+    }
+    
     public void updateTotals() {
     	pricePerPound = new BigDecimal("0" + etPricePerPound.getText());
     	totalWeight = new BigDecimal("0" + etTotalWeight.getText());
@@ -394,11 +473,15 @@ public class CheckoutTab extends Fragment implements OnClickListener {
 		//Log.i("Item Price =", "" + itemPrice.doubleValue());
 		//Log.i("Total Price =", "" + totalPrice.doubleValue());
 		
-		amountPaid = totalPrice.subtract(totalPrice.multiply(uac));
+		lessUAC = totalPrice.multiply(uac);
+		
+		amountPaid = totalPrice.subtract(lessUAC);
 		
 		amountPaid.setScale(2, RoundingMode.HALF_EVEN);
 		
 		tvTotalPrice.setText("$" + amountPaid.setScale(2, RoundingMode.HALF_EVEN));
+		tvSubTotalPrice.setText("$" + totalPrice.setScale(2, RoundingMode.HALF_EVEN));
+        tvLessUAC.setText("$" + lessUAC.setScale(2, RoundingMode.HALF_EVEN));
     }
 
 	@Override

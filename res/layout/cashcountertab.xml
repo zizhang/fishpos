@@ -538,6 +538,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:includeFontPadding="false"
+                android:layout_marginRight="10dp"
                 android:text="@string/totalCash"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="32sp" />

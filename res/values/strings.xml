@@ -16,6 +16,8 @@
     <string name="PricePerPound">Price/lb   $</string>
     <string name="Weight">Weight</string>
     <string name="totalPrice">Total Price</string>
+    <string name="lessUAC">Less UAC</string>
+    <string name="total">Total</string>
     <string name="lbs">lbs</string>
     <string name="Phone">Phone</string>
     <string name="Add">Add</string>

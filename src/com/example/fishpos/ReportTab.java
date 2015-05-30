@@ -230,6 +230,24 @@ public class ReportTab extends Fragment {
             tvAmountPaid.setTextSize(18);
             tvAmountPaid.setText(String.format("$%.2f", amountPaid));
             
+            Button btn = new Button(getActivity());
+            btn.setText("View");
+            btn.setId(i);
+            btn.setTag(receiptNo);
+            btn.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                	Log.i("DEBUG", "Button id = " + v.getTag());
+                	Activity activity = getActivity();
+                    
+                    sortByBoatIntent = new Intent(activity, ReportByBoat.class);
+                    sortByBoatIntent.putExtra("searchBoatName", "" + etBoatName.getText());
+                    TextKeyListener.clear((etBoatName).getText());
+                    startActivityForResult(sortByBoatIntent, 101);
+                }
+            });
+            
             row.addView(tvReceiptNo);
             row.addView(tvDate);
             row.addView(tvNo);
@@ -238,6 +256,7 @@ public class ReportTab extends Fragment {
             //row.addView(tvPricePerPound);
             //row.addView(tvWeight);
             row.addView(tvAmountPaid);
+            row.addView(btn);
             
             orderTable.addView(row);
             count++;
