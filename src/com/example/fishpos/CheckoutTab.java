@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.TextKeyListener;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,7 +35,7 @@ import android.content.res.Resources;
  * Need to be tested more and check for illegal inputs
  * */
 public class CheckoutTab extends Fragment implements OnClickListener {
-	Button addButton, checkoutBtn;
+	Button addButton, checkoutBtn, addOrderItemBtn;
 	TextView bNameField, tvDate, tvTotalPrice;
 	Intent addCustIntent;
 	Spinner custSpinner, fishTypeSpinner;
@@ -47,10 +48,11 @@ public class CheckoutTab extends Fragment implements OnClickListener {
 	String currentDate;
 	SharedPreferences uacPrefs; // Store uac (fish tax) in shared preferences
 	EditText etUAC, etPricePerPound, etTotalWeight, etReceiptNo;
-	BigDecimal pricePerPound, totalWeight, totalPrice, amountPaid, uac;
+	BigDecimal pricePerPound, totalWeight, totalPrice, amountPaid, uac, itemPrice;
 	Order newSale;
 	String chkoutMsg, receiptNo;
 	long dateEpoch;
+	String fishTypeSelected = "Sockeye RD.";
 	
 	SharedPreferences datePrefs;
 	
@@ -66,14 +68,16 @@ public class CheckoutTab extends Fragment implements OnClickListener {
         // Initialization
         pricePerPound = new BigDecimal("0");
         totalWeight = new BigDecimal("0");
+        itemPrice = new BigDecimal("0");
         uac = new BigDecimal(uacPrefs.getFloat("UAC", 0.02f));
-        totalPrice = pricePerPound.multiply(totalWeight);
+        totalPrice = new BigDecimal("0");;
         receiptNo = "000000";
         
         amountPaid = totalPrice.subtract(totalPrice.multiply(uac));
         
         newSale = new Order();
         
+        addOrderItemBtn = (Button) rootView.findViewById(R.id.addOrderItem);
         addButton = (Button) rootView.findViewById(R.id.addCustBtn);
         checkoutBtn = (Button) rootView.findViewById(R.id.checkout);
         custSpinner = (Spinner) rootView.findViewById(R.id.custSpinner);
@@ -112,8 +116,8 @@ public class CheckoutTab extends Fragment implements OnClickListener {
         loadFishTypeSpinnerData();
         
         //etUAC.addTextChangedListener(txtEditWatcherUAC);
-        etPricePerPound.addTextChangedListener(txtEditWatcherPricePerPound);
-        etTotalWeight.addTextChangedListener(txtEditWatcherTotalWeight);
+        //etPricePerPound.addTextChangedListener(txtEditWatcherPricePerPound);
+        //etTotalWeight.addTextChangedListener(txtEditWatcherTotalWeight);
         
         // Dropdown displays all boats from customer database
         custSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -132,6 +136,7 @@ public class CheckoutTab extends Fragment implements OnClickListener {
                 //output.setText(custOutput + "\t" + fishTypeOutput);
                 
                 newSale.setName(boatSelected.getBoatName());
+                newSale.setNo(boatSelected.getBoatNo());
                 
                  
                 //Toast.makeText(getActivity().getBaseContext(),OutputMsg, Toast.LENGTH_LONG).show();
@@ -157,7 +162,8 @@ public class CheckoutTab extends Fragment implements OnClickListener {
                 //fishTypeOutput = "" + ft.getFishType();
                 //output.setText(custOutput + "\t" + fishTypeOutput);
                 
-                newSale.setFishType(ft.getFishType());
+                //newSale.setFishType(ft.getFishType());
+                fishTypeSelected = ft.getFishType();
                  
                 //Toast.makeText(getActivity().getBaseContext(),OutputMsg, Toast.LENGTH_LONG).show();
             }
@@ -187,9 +193,7 @@ public class CheckoutTab extends Fragment implements OnClickListener {
 
         });
         
-        // Add sale to sales table
-        // TODO: multiple fish types and weigh ins per sale. Need a slight redesign
-        checkoutBtn.setOnClickListener(new OnClickListener() {
+        addOrderItemBtn.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -210,12 +214,49 @@ public class CheckoutTab extends Fragment implements OnClickListener {
                 	newSale.setReceiptNo(receipt);
                 	//newSale.setPricePerPound(pricePerPound.doubleValue());
                     //newSale.setTotalWeight(totalWeight.doubleValue());
-                	newSale.addOrderItem(pricePerPound.doubleValue(), totalWeight.doubleValue());
+                	newSale.addOrderItem(fishTypeSelected, pricePerPound.doubleValue(), totalWeight.doubleValue(), itemPrice.doubleValue());
+                	
+                	updateTotals();
+                	
+                	etPricePerPound.setText("");
+                	etTotalWeight.setText("");
+                    
+                    // TODO: Show order item in checkout list
+                } else {
+                    Toast.makeText(getActivity().getApplicationContext(), "Invalid Entry Field (ReceiptNo/PricePerPound/Weight)!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                
+            }
+
+        });
+        
+        
+        
+        // Add sale to sales table
+        // TODO: multiple fish types and weigh ins per sale. Need a slight redesign
+        checkoutBtn.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+            	String receipt = etReceiptNo.getText().toString();
+                
+                // database handler
+            	DatabaseHandler db = new DatabaseHandler(getActivity().getApplicationContext());
+            	
+            	if(!db.isUniqueReceipt(receipt)) {
+            		db.close();
+            		Toast.makeText(getActivity().getApplicationContext(), "Receipt # already exists!", Toast.LENGTH_SHORT).show();
+                    return;
+            	} else if (receipt.trim().length() > 0) {
+                	newSale.setReceiptNo(receipt);
+                	//newSale.setPricePerPound(pricePerPound.doubleValue());
+                    //newSale.setTotalWeight(totalWeight.doubleValue());
                     newSale.setAmountPaid(amountPaid.doubleValue());
                     newSale.setDate(dateEpoch);
                     chkoutMsg = newSale.toString();
                 } else {
-                    Toast.makeText(getActivity().getApplicationContext(), "Invalid Entry Field (PricePerPound/Weight)!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), "Invalid Entry Field (ReceiptNo)!", Toast.LENGTH_SHORT).show();
                     return;
                 }
             	
@@ -242,8 +283,22 @@ public class CheckoutTab extends Fragment implements OnClickListener {
     						
     						db.addOrder(newSale);
     	                    
+    						// Empty input fields and zero values
+    						// clean up for next new order
     	                    etTotalWeight.setText("");
     	                    etPricePerPound.setText("");
+    	                    etReceiptNo.setText("");
+    	                    
+    	                    pricePerPound = new BigDecimal("0");
+    	                    totalWeight = new BigDecimal("0");
+    	                    itemPrice = new BigDecimal("0");
+    	                    totalPrice = new BigDecimal("0");
+    	                    amountPaid = new BigDecimal("0");
+    	                    
+    	                    // Textviews should display zeros
+    	                    tvTotalPrice.setText("$" + amountPaid.setScale(2, RoundingMode.HALF_EVEN));
+    	                    
+    	                    
     	                    db.close();
     					}
     				  });
@@ -327,6 +382,24 @@ public class CheckoutTab extends Fragment implements OnClickListener {
             // Set adapter to spinner
             fishTypeSpinner.setAdapter(fishTypeAdapter);
     }
+    
+    public void updateTotals() {
+    	pricePerPound = new BigDecimal("0" + etPricePerPound.getText());
+    	totalWeight = new BigDecimal("0" + etTotalWeight.getText());
+    	
+    	//Log.i("Price Per Pound =", "" + pricePerPound.doubleValue());
+    	//Log.i("Total weight =", "" + totalWeight.doubleValue());
+		itemPrice = pricePerPound.multiply(totalWeight);
+		totalPrice = totalPrice.add(itemPrice);
+		//Log.i("Item Price =", "" + itemPrice.doubleValue());
+		//Log.i("Total Price =", "" + totalPrice.doubleValue());
+		
+		amountPaid = totalPrice.subtract(totalPrice.multiply(uac));
+		
+		amountPaid.setScale(2, RoundingMode.HALF_EVEN);
+		
+		tvTotalPrice.setText("$" + amountPaid.setScale(2, RoundingMode.HALF_EVEN));
+    }
 
 	@Override
 	public void onClick(View v) {
@@ -356,13 +429,14 @@ public class CheckoutTab extends Fragment implements OnClickListener {
 		  public void onTextChanged(CharSequence s, int a, int b, int c) {
 		  }
     };*/
-    
+    /*
     private final TextWatcher txtEditWatcherPricePerPound = new TextWatcher() {
     	public void afterTextChanged(Editable s) {
 			if(s.length() > 0) {
 				
 				pricePerPound = new BigDecimal("0" + etPricePerPound.getText());
-				totalPrice = pricePerPound.multiply(totalWeight);
+				itemPrice = pricePerPound.multiply(totalWeight);
+				totalPrice = totalPrice.add(itemPrice);
 				
 				amountPaid = totalPrice.subtract(totalPrice.multiply(uac));
 				
@@ -385,7 +459,8 @@ public class CheckoutTab extends Fragment implements OnClickListener {
     		// Use BigDecimal to avoid rounding errors
 			if(s.length() > 0) {
 				totalWeight = new BigDecimal("0" + etTotalWeight.getText());
-				totalPrice = pricePerPound.multiply(totalWeight);
+				itemPrice = pricePerPound.multiply(totalWeight);
+				totalPrice = totalPrice.add(itemPrice);
 				
 				amountPaid = totalPrice.subtract(totalPrice.multiply(uac));
 				
@@ -401,6 +476,6 @@ public class CheckoutTab extends Fragment implements OnClickListener {
 		  @Override
 		  public void onTextChanged(CharSequence s, int a, int b, int c) {
 		  }
-    };
+    };*/
  
 }

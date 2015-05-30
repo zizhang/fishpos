@@ -40,10 +40,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_DATE = "saleDate";
     private static final String KEY_BNO = "bNo";
     private static final String KEY_NAME = "bname";
+    private static final String KEY_AMOUNT_PAID = "amountPaid";
+    
+    // Order Item table
+    private static final String TABLE_ORDER_ITEM = "OrderItem";
+    
+ // Order Table Columns names
+    private static final String KEY_RECEIPT_NO_ORDITEM = "receiptNo";
     private static final String KEY_FISH_TYPE = "fishType";
     private static final String KEY_PRICE = "price";
     private static final String KEY_WEIGHT = "weight";
-    private static final String KEY_AMOUNT_PAID = "amountPaid";
  
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -62,13 +68,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         
         
         String CREATE_ORDERS_TABLE = "CREATE TABLE " + TABLE_ORDERS + "(" 
-        		+ KEY_RECEIPT_NO + " TEXT PRIMARY KEY," + KEY_DATE + " INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))," + KEY_NAME + " TEXT," + KEY_BNO + "TEXT," + KEY_FISH_TYPE + " TEXT,"
-        		+ KEY_PRICE + " REAL," + KEY_WEIGHT + " REAL," + KEY_AMOUNT_PAID + " REAL" +  ")";
+        		+ KEY_RECEIPT_NO + " TEXT PRIMARY KEY," + KEY_DATE + " INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))," + KEY_BNO + " TEXT," + KEY_NAME + " TEXT," + KEY_AMOUNT_PAID + " REAL" +  ")";
+        
+        String CREATE_ORDER_ITEM_TABLE = "CREATE TABLE " + TABLE_ORDER_ITEM + "(" 
+        		+ KEY_RECEIPT_NO + " TEXT PRIMARY KEY," + KEY_FISH_TYPE + " TEXT,"
+        		+ KEY_PRICE + " REAL," + KEY_WEIGHT + " REAL" + ")";
         db.execSQL(CREATE_BOATS_TABLE);
         db.execSQL(CREATE_CREWS_TABLE);
-        
-        
         db.execSQL(CREATE_ORDERS_TABLE);
+        db.execSQL(CREATE_ORDER_ITEM_TABLE);
     }
  
     // Upgrading database
@@ -78,6 +86,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOAT);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CREW);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ORDERS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ORDER_ITEM);
  
         // Create tables again
         onCreate(db);
@@ -119,11 +128,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     	SQLiteDatabase db = this.getWritableDatabase();
     	 
         ContentValues values = new ContentValues();
+        ContentValues orderItemValues = new ContentValues();
         values.put(KEY_RECEIPT_NO, newOrder.getReceiptNo());
         values.put(KEY_DATE, newOrder.getDate());
         values.put(KEY_NAME, newOrder.getName()); // Customer Info
         values.put(KEY_BNO, newOrder.getNo());
-        values.put(KEY_FISH_TYPE, newOrder.getFishType()); // Fish Type
+        //Log.i("db handler", "CFV = " + newOrder.getNo());
+        //values.put(KEY_FISH_TYPE, newOrder.getFishType()); // Fish Type
         //values.put(KEY_PRICE, newOrder.getPricePerPound()); // Price
         //values.put(KEY_WEIGHT, newOrder.getTotalWeight()); // Total weight
         values.put(KEY_AMOUNT_PAID, newOrder.getAmountPaid()); // Amount paid in cents
@@ -131,7 +142,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ArrayList<OrderItem> newOrderItems = newOrder.getAllOrderItems();
         
         for(OrderItem item : newOrderItems) {
+        	orderItemValues = new ContentValues();
+        	orderItemValues.put(KEY_RECEIPT_NO_ORDITEM, newOrder.getReceiptNo());
+        	orderItemValues.put(KEY_FISH_TYPE, item.getFishType());
+        	orderItemValues.put(KEY_PRICE, item.getPricePerPound());
+        	orderItemValues.put(KEY_WEIGHT, item.getTotalWeight());
         	
+        	// Insert Order Item to db
+        	db.insert(TABLE_ORDER_ITEM, null, orderItemValues);
         }
         
      
@@ -216,6 +234,37 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return crewList;
     }
     
+    // Getting All Order Items of a specific receiptNo
+    public ArrayList<OrderItem> getAllOrderItems(String receiptNo) {
+    	ArrayList<OrderItem> ordItemList = new ArrayList<OrderItem>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_ORDER_ITEM + " WHERE " + KEY_RECEIPT_NO + "='" + receiptNo + "'";
+     
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+     
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                OrderItem item = new OrderItem(cursor.getString(1), Double.parseDouble(cursor.getString(2)), Double.parseDouble(cursor.getString(3)));
+                //item.setReceiptNo(cursor.getString(0));
+                //item.setDate(Long.parseLong(cursor.getString(1)));
+                //item.setName(cursor.getString(2));
+                //ord.setFishType(cursor.getString(3));
+                //ord.setPricePerPound(Double.parseDouble(cursor.getString(4)));
+                //ord.setTotalWeight(Double.parseDouble(cursor.getString(5)));
+                //ord.setAmountPaid(Double.parseDouble(cursor.getString(3)));
+                item.setReceiptNo(receiptNo);
+                ordItemList.add(item);
+            } while (cursor.moveToNext());
+        }
+        
+        db.close();
+     
+        // return contact list
+        return ordItemList;
+    }
+    
     // Getting All Orders
     public ArrayList<Order> getAllOrders() {
     	ArrayList<Order> ordList = new ArrayList<Order>();
@@ -231,11 +280,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 Order ord = new Order();
                 ord.setReceiptNo(cursor.getString(0));
                 ord.setDate(Long.parseLong(cursor.getString(1)));
-                ord.setName(cursor.getString(2));
-                ord.setFishType(cursor.getString(3));
-                ord.setPricePerPound(Double.parseDouble(cursor.getString(4)));
-                ord.setTotalWeight(Double.parseDouble(cursor.getString(5)));
-                ord.setAmountPaid(Double.parseDouble(cursor.getString(6)));
+                ord.setNo(cursor.getString(2));
+                ord.setName(cursor.getString(3));
+                Log.i("db handler", "CFV = " + ord.getNo());
+                //ord.setFishType(cursor.getString(3));
+                //ord.setPricePerPound(Double.parseDouble(cursor.getString(4)));
+                //ord.setTotalWeight(Double.parseDouble(cursor.getString(5)));
+                ord.setAmountPaid(Double.parseDouble(cursor.getString(4)));
                 // Adding contact to list
                 ordList.add(ord);
             } while (cursor.moveToNext());
@@ -260,14 +311,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                Order ord = new Order();
+            	Order ord = new Order();
                 ord.setReceiptNo(cursor.getString(0));
                 ord.setDate(Long.parseLong(cursor.getString(1)));
-                ord.setName(cursor.getString(2));
-                ord.setFishType(cursor.getString(3));
-                ord.setPricePerPound(Double.parseDouble(cursor.getString(4)));
-                ord.setTotalWeight(Double.parseDouble(cursor.getString(5)));
-                ord.setAmountPaid(Double.parseDouble(cursor.getString(6)));
+                ord.setNo(cursor.getString(2));
+                ord.setName(cursor.getString(3));
+                //ord.setFishType(cursor.getString(3));
+                //ord.setPricePerPound(Double.parseDouble(cursor.getString(4)));
+                //ord.setTotalWeight(Double.parseDouble(cursor.getString(5)));
+                ord.setAmountPaid(Double.parseDouble(cursor.getString(4)));
                 // Adding contact to list
                 ordList.add(ord);
             } while (cursor.moveToNext());
@@ -284,7 +336,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public ArrayList<Order> getAllOrdersByBoat(String boatName) {
     	ArrayList<Order> ordList = new ArrayList<Order>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_ORDERS + " WHERE " + KEY_NAME + " LIKE '%" + boatName + "%' ORDER BY " + KEY_DATE + " DESC";
+        String selectQuery = "SELECT  * FROM " + TABLE_ORDERS + " WHERE " + KEY_NAME + " LIKE '%" + boatName + "%' OR " + KEY_BNO + "='" + boatName + "'" + " ORDER BY " + KEY_DATE + " DESC";
      
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -292,14 +344,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                Order ord = new Order();
+            	Order ord = new Order();
                 ord.setReceiptNo(cursor.getString(0));
                 ord.setDate(Long.parseLong(cursor.getString(1)));
-                ord.setName(cursor.getString(2));
-                ord.setFishType(cursor.getString(3));
-                ord.setPricePerPound(Double.parseDouble(cursor.getString(4)));
-                ord.setTotalWeight(Double.parseDouble(cursor.getString(5)));
-                ord.setAmountPaid(Double.parseDouble(cursor.getString(6)));
+                ord.setNo(cursor.getString(2));
+                ord.setName(cursor.getString(3));
+                //ord.setFishType(cursor.getString(3));
+                //ord.setPricePerPound(Double.parseDouble(cursor.getString(4)));
+                //ord.setTotalWeight(Double.parseDouble(cursor.getString(5)));
+                ord.setAmountPaid(Double.parseDouble(cursor.getString(4)));
                 // Adding contact to list
                 ordList.add(ord);
             } while (cursor.moveToNext());

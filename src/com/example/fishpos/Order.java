@@ -16,32 +16,29 @@ public class Order {
 	}
 	
 	
-	public Order(String bname, String bno, String fishType, double amountPaid) {
+	public Order(String bname, String bno, double amountPaid) {
 		this.receiptNo = "000000";
 		this.date = 0;
 		this.bname = bname;
 		this.bno = bno;
-		this.fishType = fishType;
 		this.amountPaid = amountPaid;
 		orderItemList = new ArrayList<OrderItem>();
 	}
 	
-	public Order(long date, String bname, String bno, String fishType, double amountPaid) {
+	public Order(long date, String bname, String bno, double amountPaid) {
 		this.receiptNo = "000000";
 		this.date = date;
 		this.bname = bname;
 		this.bno = bno;
-		this.fishType = fishType;
 		this.amountPaid = amountPaid;
 		orderItemList = new ArrayList<OrderItem>();
 	}
 	
-	public Order(String receiptNo, long date, String bname, String bno, String fishType, double amountPaid) {
+	public Order(String receiptNo, long date, String bname, String bno, double amountPaid) {
 		this.receiptNo = receiptNo;
 		this.date = date;
 		this.bname = bname;
 		this.bno = bno;
-		this.fishType = fishType;
 		this.amountPaid = amountPaid;
 		orderItemList = new ArrayList<OrderItem>();
 	}
@@ -54,11 +51,26 @@ public class Order {
 		return this.orderItemList;
 	}
 	
-	public boolean addOrderItem(double pricePerPound, double totalWeight) {
-		OrderItem newOrderItem = new OrderItem(pricePerPound, totalWeight);
+	public boolean addOrderItem(String fishType, double pricePerPound, double totalWeight, double price) {
+		if(orderItemList == null) {
+			orderItemList = new ArrayList<OrderItem>();
+		}
+		
+		OrderItem newOrderItem = new OrderItem(fishType, pricePerPound, totalWeight);
 		
 		if(pricePerPound > 0 && totalWeight > 0) {
+			newOrderItem.setReceiptNo(this.getReceiptNo());
+			newOrderItem.setPrice(price);
 			orderItemList.add(newOrderItem);
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public boolean removeOrderItem(int index) {
+		if(index >= 0 && index < orderItemList.size()) {
+			orderItemList.remove(index);
 			return true;
 		}
 		
@@ -101,16 +113,8 @@ public class Order {
 		this.bname = bname;
 	}
 	
-	public String getFishType() {
-		return this.fishType;
-	}
-	
-	public void setFishType(String fishType) {
-		this.fishType = fishType;
-	}
-	
 	@Override
     public String toString () {
-        return "Boat: " + this.bname + "\n\nFish Type: " + this.fishType + "\n\nAmount Paid: $" + String.format("%.2f", this.amountPaid);
+        return "CFV#: " + this.bno + "\n\nBoat: " + this.bname + "\n\nAmount Paid: $" + String.format("%.2f", this.amountPaid);
     }
 }

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import android.os.Bundle;
 import android.text.method.TextKeyListener;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -111,6 +112,14 @@ public class ReportTab extends Fragment {
         headDate.setPadding(5, 5, 5, 5);
         tr_head.addView(headDate);// add the column to the table row here
         
+        TextView headBoatNo = new TextView(getActivity());
+        headBoatNo.setId(25);
+        headBoatNo.setText("CFV #");
+        headBoatNo.setTextColor(Color.WHITE);
+        headBoatNo.setTextSize(25);
+        headBoatNo.setPadding(5, 5, 5, 5);
+        tr_head.addView(headBoatNo);// add the column to the table row here
+        
         TextView headBoatName = new TextView(getActivity());
         headBoatName.setId(25);
         headBoatName.setText("Boat Name");
@@ -118,7 +127,7 @@ public class ReportTab extends Fragment {
         headBoatName.setTextSize(25);
         headBoatName.setPadding(5, 5, 5, 5);
         tr_head.addView(headBoatName);// add the column to the table row here
-        
+        /*
         TextView headFishType = new TextView(getActivity());
         headFishType.setId(25);
         headFishType.setText("Fish Type");
@@ -142,6 +151,7 @@ public class ReportTab extends Fragment {
         headWeight.setTextSize(25);
         headWeight.setPadding(5, 5, 5, 5);
         tr_head.addView(headWeight);// add the column to the table row here
+        */
         
         TextView headAmountPaid = new TextView(getActivity());
         headAmountPaid.setId(25);
@@ -168,9 +178,11 @@ public class ReportTab extends Fragment {
             String receiptNo = allOrdersList.get(i).getReceiptNo();
             long date = allOrdersList.get(i).getDate();
             String name = allOrdersList.get(i).getName();
-            String fishType = allOrdersList.get(i).getFishType();
-            double pricePerPound = allOrdersList.get(i).getPricePerPound();
-            double weight = allOrdersList.get(i).getTotalWeight();
+            String boatno = allOrdersList.get(i).getNo();
+            //Log.i("debug", "CFV = " + boatno);
+            //String fishType = allOrdersList.get(i).getFishType();
+            //double pricePerPound = allOrdersList.get(i).getPricePerPound();
+            //double weight = allOrdersList.get(i).getTotalWeight();
             double amountPaid = allOrdersList.get(i).getAmountPaid();
             
             amtPaid = new BigDecimal("" + allOrdersList.get(i).getAmountPaid());
@@ -185,15 +197,22 @@ public class ReportTab extends Fragment {
             tvReceiptNo.setTextColor(Color.BLACK);
             tvReceiptNo.setTextSize(18);
             tvReceiptNo.setText("" + receiptNo);
+            
             TextView tvDate = new TextView(getActivity());
             tvDate.setTextColor(Color.BLACK);
             tvDate.setTextSize(18);
             tvDate.setText(dateFormatted);
+            
+            TextView tvNo = new TextView(getActivity());
+            tvNo.setTextColor(Color.BLACK);
+            tvNo.setTextSize(18);
+            tvNo.setText(boatno);
+            
             TextView tvName = new TextView(getActivity());
             tvName.setTextColor(Color.BLACK);
             tvName.setTextSize(18);
             tvName.setText(name);
-            TextView tvFishType = new TextView(getActivity());
+            /*TextView tvFishType = new TextView(getActivity());
             tvFishType.setTextColor(Color.BLACK);
             tvFishType.setTextSize(18);
             tvFishType.setText(fishType);
@@ -205,6 +224,7 @@ public class ReportTab extends Fragment {
             tvWeight.setTextColor(Color.BLACK);
             tvWeight.setTextSize(18);
             tvWeight.setText(String.valueOf(weight));
+            */
             TextView tvAmountPaid = new TextView(getActivity());
             tvAmountPaid.setTextColor(Color.BLACK);
             tvAmountPaid.setTextSize(18);
@@ -212,10 +232,11 @@ public class ReportTab extends Fragment {
             
             row.addView(tvReceiptNo);
             row.addView(tvDate);
+            row.addView(tvNo);
             row.addView(tvName);
-            row.addView(tvFishType);
-            row.addView(tvPricePerPound);
-            row.addView(tvWeight);
+            //row.addView(tvFishType);
+            //row.addView(tvPricePerPound);
+            //row.addView(tvWeight);
             row.addView(tvAmountPaid);
             
             orderTable.addView(row);

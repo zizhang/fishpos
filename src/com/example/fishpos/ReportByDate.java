@@ -61,6 +61,14 @@ public class ReportByDate extends Activity {
         headDate.setPadding(5, 5, 5, 5);
         tr_head.addView(headDate);// add the column to the table row here
         
+        TextView headBoatNo = new TextView(context);
+        headBoatNo.setId(25);
+        headBoatNo.setText("CFV #");
+        headBoatNo.setTextColor(Color.WHITE);
+        headBoatNo.setTextSize(25);
+        headBoatNo.setPadding(5, 5, 5, 5);
+        tr_head.addView(headBoatNo);// add the column to the table row here
+        
         TextView headBoatName = new TextView(context);
         headBoatName.setId(25);
         headBoatName.setText("Boat Name");
@@ -68,30 +76,6 @@ public class ReportByDate extends Activity {
         headBoatName.setTextSize(25);
         headBoatName.setPadding(5, 5, 5, 5);
         tr_head.addView(headBoatName);// add the column to the table row here
-        
-        TextView headFishType = new TextView(context);
-        headFishType.setId(25);
-        headFishType.setText("Fish Type");
-        headFishType.setTextColor(Color.WHITE);
-        headFishType.setTextSize(25);
-        headFishType.setPadding(5, 5, 5, 5);
-        tr_head.addView(headFishType);// add the column to the table row here
-        
-        TextView headPrice = new TextView(context);
-        headPrice.setId(25);
-        headPrice.setText("Price/lb");
-        headPrice.setTextColor(Color.WHITE);
-        headPrice.setTextSize(25);
-        headPrice.setPadding(5, 5, 5, 5);
-        tr_head.addView(headPrice);// add the column to the table row here
-        
-        TextView headWeight = new TextView(context);
-        headWeight.setId(25);
-        headWeight.setText("Weight (lbs)");
-        headWeight.setTextColor(Color.WHITE);
-        headWeight.setTextSize(25);
-        headWeight.setPadding(5, 5, 5, 5);
-        tr_head.addView(headWeight);// add the column to the table row here
         
         TextView headAmountPaid = new TextView(context);
         headAmountPaid.setId(25);
@@ -118,9 +102,10 @@ public class ReportByDate extends Activity {
             String receiptNo = allOrdersListByDate.get(i).getReceiptNo();
             long date = allOrdersListByDate.get(i).getDate();
             String name = allOrdersListByDate.get(i).getName();
-            String fishType = allOrdersListByDate.get(i).getFishType();
-            double pricePerPound = allOrdersListByDate.get(i).getPricePerPound();
-            double weight = allOrdersListByDate.get(i).getTotalWeight();
+            String boatno = allOrdersListByDate.get(i).getNo();
+            //String fishType = allOrdersListByDate.get(i).getFishType();
+            //double pricePerPound = allOrdersListByDate.get(i).getPricePerPound();
+            //double weight = allOrdersListByDate.get(i).getTotalWeight();
             double amountPaid = allOrdersListByDate.get(i).getAmountPaid();
             
             amtPaid = new BigDecimal("" + allOrdersListByDate.get(i).getAmountPaid());
@@ -128,21 +113,29 @@ public class ReportByDate extends Activity {
             totalAmountPaid = totalAmountPaid.add(amtPaid);
             
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
-            String dateFormatted = sdf.format(new Date(date*1000));
+            String dateFormatted = sdf.format(new Date(date));
             
             
             TextView tvReceiptNo = new TextView(context);
             tvReceiptNo.setTextColor(Color.BLACK);
             tvReceiptNo.setTextSize(18);
             tvReceiptNo.setText("" + receiptNo);
+            
             TextView tvDate = new TextView(context);
             tvDate.setTextColor(Color.BLACK);
             tvDate.setTextSize(18);
             tvDate.setText(dateFormatted);
+            
+            TextView tvNo = new TextView(context);
+            tvNo.setTextColor(Color.BLACK);
+            tvNo.setTextSize(18);
+            tvNo.setText(boatno);
+            
             TextView tvName = new TextView(context);
             tvName.setTextColor(Color.BLACK);
             tvName.setTextSize(18);
             tvName.setText(name);
+            /*
             TextView tvFishType = new TextView(context);
             tvFishType.setTextColor(Color.BLACK);
             tvFishType.setTextSize(18);
@@ -155,6 +148,7 @@ public class ReportByDate extends Activity {
             tvWeight.setTextColor(Color.BLACK);
             tvWeight.setTextSize(18);
             tvWeight.setText(String.valueOf(weight));
+            */
             TextView tvAmountPaid = new TextView(context);
             tvAmountPaid.setTextColor(Color.BLACK);
             tvAmountPaid.setTextSize(18);
@@ -162,10 +156,11 @@ public class ReportByDate extends Activity {
             
             row.addView(tvReceiptNo);
             row.addView(tvDate);
+            row.addView(tvNo);
             row.addView(tvName);
-            row.addView(tvFishType);
-            row.addView(tvPricePerPound);
-            row.addView(tvWeight);
+            //row.addView(tvFishType);
+            //row.addView(tvPricePerPound);
+            //row.addView(tvWeight);
             row.addView(tvAmountPaid);
             
             orderTableByDate.addView(row);
