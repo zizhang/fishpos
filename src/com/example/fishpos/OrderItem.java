@@ -7,6 +7,10 @@ public class OrderItem {
 	String receiptNo;
 	double price;
 	
+	public OrderItem() {
+		
+	}
+	
 	public OrderItem(String fishType, double pricePerPound, double totalWeight) {
 		this.pricePerPound = pricePerPound;
 		this.totalWeight = totalWeight;

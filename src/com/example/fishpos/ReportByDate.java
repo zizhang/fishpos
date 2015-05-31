@@ -8,8 +8,13 @@ import java.util.Date;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -19,6 +24,7 @@ public class ReportByDate extends Activity {
 	TableLayout orderTableByDate;
 	ArrayList<Order> allOrdersListByDate;
 	BigDecimal totalAmountPaid;
+	Intent viewOrderIntent;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -154,6 +160,22 @@ public class ReportByDate extends Activity {
             tvAmountPaid.setTextSize(18);
             tvAmountPaid.setText(String.format("$%.2f", amountPaid));
             
+            Button btn = new Button(context);
+            btn.setText("View");
+            btn.setId(i);
+            btn.setTag(receiptNo);
+            btn.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                	Log.i("DEBUG", "Button id = " + v.getTag());
+                    
+                	viewOrderIntent = new Intent(getApplicationContext(), ViewOrder.class);
+                	viewOrderIntent.putExtra("orderReceiptNo", "" + v.getTag());
+                    startActivityForResult(viewOrderIntent, 101);
+                }
+            });
+            
             row.addView(tvReceiptNo);
             row.addView(tvDate);
             row.addView(tvNo);
@@ -162,6 +184,7 @@ public class ReportByDate extends Activity {
             //row.addView(tvPricePerPound);
             //row.addView(tvWeight);
             row.addView(tvAmountPaid);
+            row.addView(btn);
             
             orderTableByDate.addView(row);
             count++;

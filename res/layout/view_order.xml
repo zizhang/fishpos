@@ -95,11 +95,11 @@
 
         <TableLayout
             android:id="@+id/orderItems"
-            android:layout_width="300dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:padding="5dp"
-            android:stretchColumns="*" >
+            android:layout_margin="10dp"
+            android:padding="10dp" >
         </TableLayout>
     </ScrollView>
  

@@ -1,6 +1,7 @@
 package com.example.fishpos;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -34,6 +35,8 @@ public class SettingsTab extends Fragment {
 	private SharedPreferences uacPrefs;
 	private SharedPreferences datePrefs;
 	private float uac;
+	
+	private Button dropBoatBtn, dropOrderBtn;
  
 	private int year;
 	private int month;
@@ -56,6 +59,9 @@ public class SettingsTab extends Fragment {
  		date_picker = (DatePicker) rootView.findViewById(R.id.date_picker);
  		btnChangeDate = (Button) rootView.findViewById(R.id.btnChangeDate);
  		setUAC = (Button) rootView.findViewById(R.id.setUACbtn);
+ 		
+ 		dropBoatBtn = (Button) rootView.findViewById(R.id.dropBoatTable);
+ 		dropOrderBtn = (Button) rootView.findViewById(R.id.dropOrderTable);
  		
  		// Get UAC value and display in edittext
  		uacET.setText("" + uac);
@@ -130,6 +136,96 @@ public class SettingsTab extends Fragment {
 
 			}
 
+		});
+		
+		dropBoatBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+                // database handler
+            	DatabaseHandler db = new DatabaseHandler(getActivity().getApplicationContext());
+            	
+            	AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+            			getActivity());
+            	
+            	// set title
+    			alertDialogBuilder.setTitle("Clear All Boats");
+    			
+    			// set dialog message
+    			alertDialogBuilder
+    				.setMessage("Are you sure?")
+    				.setCancelable(false)
+    				.setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
+    					public void onClick(DialogInterface dialog,int id) {
+    						// if this button is clicked, just close
+    						// the dialog box and do nothing
+    						dialog.cancel();
+    					}
+    				})
+    				.setPositiveButton("OK",new DialogInterface.OnClickListener() {
+    					public void onClick(DialogInterface dialog,int id) {
+    						DatabaseHandler db = new DatabaseHandler(getActivity().getApplicationContext());
+    						
+    						db.deleteAllBoats();
+    						
+    	                    db.close();
+    					}
+    				  });
+     
+    				// create alert dialog
+    				AlertDialog alertDialog = alertDialogBuilder.create();
+    				
+    				// show it
+    				alertDialog.show();
+    				
+    				TextView tvDialog = (TextView) alertDialog.findViewById(android.R.id.message);
+    				tvDialog.setTextSize(30);
+			}
+		});
+
+		dropOrderBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// database handler
+            	DatabaseHandler db = new DatabaseHandler(getActivity().getApplicationContext());
+            	
+            	AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+            			getActivity());
+            	
+            	// set title
+    			alertDialogBuilder.setTitle("Clear All Orders");
+    			
+    			// set dialog message
+    			alertDialogBuilder
+    				.setMessage("Are you sure?")
+    				.setCancelable(false)
+    				.setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
+    					public void onClick(DialogInterface dialog,int id) {
+    						// if this button is clicked, just close
+    						// the dialog box and do nothing
+    						dialog.cancel();
+    					}
+    				})
+    				.setPositiveButton("OK",new DialogInterface.OnClickListener() {
+    					public void onClick(DialogInterface dialog,int id) {
+    						DatabaseHandler db = new DatabaseHandler(getActivity().getApplicationContext());
+    						
+    						db.deleteAllOrders();
+    						
+    	                    db.close();
+    					}
+    				  });
+     
+    				// create alert dialog
+    				AlertDialog alertDialog = alertDialogBuilder.create();
+    				
+    				// show it
+    				alertDialog.show();
+    				
+    				TextView tvDialog = (TextView) alertDialog.findViewById(android.R.id.message);
+    				tvDialog.setTextSize(30);
+			}
 		});
         
         return rootView;
